@@ -56,6 +56,12 @@ class SessionViewModel @Inject constructor(
         }
     }
 
+    fun loadSession() {
+        viewModelScope.launch {
+            _sessionList.value = sessionRepository.getAllSessions()
+        }
+    }
+
     fun deleteAllSession() {
         viewModelScope.launch {
             sessionRepository.deleteAllSession()

@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Weightlifting</string>
     <string name="add_session">Session</string>
+    <string name="new_session">New session</string>
+    <string name="create_session">Create</string>
     <string name="add_exercise">Exercise</string>
     <string name="exercises">Exercises</string>
     <string name="your_program">Your program</string>
+    <string name="day">Day</string>
+    <string name="default_day">Monday</string>
+    <string name="route_main_screen">SessionMainScreen</string>
+    <string name="route_session_creator_screen">SessionCreatorScreen</string>
 </resources>
