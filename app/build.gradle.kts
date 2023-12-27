@@ -70,19 +70,29 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // Room
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.room:room-paging:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-paging:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.49")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    val googleDaggerHiltVersion = "2.49"
+    val androidxHiltVersion = "1.1.0"
+    implementation("com.google.dagger:hilt-android:$googleDaggerHiltVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:$androidxHiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$googleDaggerHiltVersion")
+    kapt("androidx.hilt:hilt-compiler:$androidxHiltVersion")
 
+    // Gson
     implementation ("com.google.code.gson:gson:2.10.1")
 
     // LiveData
-    implementation("androidx.compose.runtime:runtime:1.5.4")
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    val liveDataVersion = "1.5.4"
+    implementation("androidx.compose.runtime:runtime:$liveDataVersion")
+    implementation("androidx.compose.runtime:runtime-livedata:$liveDataVersion")
+
+    // Compose Navigation
+    val navVersion = "2.5.3"
+    implementation ("androidx.navigation:navigation-compose:$navVersion")
+
 }
