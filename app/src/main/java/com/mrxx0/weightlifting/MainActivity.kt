@@ -39,6 +39,10 @@ class MainActivity : ComponentActivity() {
                         composable(context.resources.getString(R.string.route_session_creator_screen)) {
                             SessionCreatorScreen(navController = navController)
                         }
+//                        composable("sessionDetailsScreen/{sessionDay}") {
+//                            it.arguments?.getString("sessionDay")
+//                                ?.let { it1 -> SessionDetailsScreen(navController, it1) }
+//                        }
                     }
                 }
             }

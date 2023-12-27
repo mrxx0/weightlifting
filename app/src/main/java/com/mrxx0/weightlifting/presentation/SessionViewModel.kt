@@ -25,15 +25,14 @@ class SessionViewModel @Inject constructor(
     val sessionList: LiveData<List<Session>?> get() = _sessionList
 
     init {
-        viewModelScope.launch {
-            _sessionList.value = sessionRepository.getAllSessions()
-        }
+        loadSession()
     }
 
     fun createSession(day: String) {
         viewModelScope.launch {
             val exercise = exercisesEntity(
                 id = 0,
+                name = "Squat",
                 restTime = 200,
                 repetitions = 8,
                 series = 5
@@ -42,7 +41,7 @@ class SessionViewModel @Inject constructor(
             repeat(5) {
                 exercisesList.add(exercise)
             }
-            val sessionEntity = SessionEntity(day = day, exercises = emptyList())
+            val sessionEntity = SessionEntity(day = day, exercises = exercisesList)
             sessionRepository.insertSession(sessionEntity)
             val currentList = _sessionList.value ?: emptyList()
             val updatedList = currentList + sessionEntity.toSession()

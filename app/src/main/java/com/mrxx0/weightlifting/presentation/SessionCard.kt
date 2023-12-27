@@ -28,7 +28,7 @@ import com.mrxx0.weightlifting.domain.Session
 
 @Composable
 fun SessionCard(
-    session : Session
+    session: Session
 ) {
     Card(
         modifier = Modifier
@@ -46,16 +46,23 @@ fun SessionCard(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = session.day,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondary
-            )
             Column(
                 modifier = Modifier
                     .padding(16.dp)
-                    .fillMaxWidth()
                     .align(Alignment.CenterVertically)
+                    .weight(1f)
+            ) {
+                Text(
+                    text = session.day,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterVertically)
+                    .weight(2f)
             ) {
                 Text(
                     text = stringResource(id = R.string.exercises) + ": ${session.exercises?.size}",
