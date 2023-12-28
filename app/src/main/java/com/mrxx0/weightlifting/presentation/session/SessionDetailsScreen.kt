@@ -89,6 +89,7 @@ fun SessionDetailsScreen(
                                 navController = navController
                             )
                         }
+                        item { Spacer(modifier = Modifier.padding(50.dp)) }
                     }
 
                 }

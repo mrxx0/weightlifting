@@ -53,10 +53,10 @@ fun SessionCard(
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.CenterVertically)
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 Text(
-                    text = session.day,
+                    text = session.day.uppercase(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
@@ -65,7 +65,7 @@ fun SessionCard(
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.CenterVertically)
-                    .weight(2f)
+                    .weight(2f),
             ) {
                 Text(
                     text = stringResource(id = R.string.exercises) + ": ${session.exercises?.size}",
