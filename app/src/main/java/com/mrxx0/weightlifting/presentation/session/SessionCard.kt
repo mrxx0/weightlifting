@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation
+package com.mrxx0.weightlifting.presentation.session
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,12 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.domain.Session
 
 @Composable
 fun SessionCard(
-    session: Session
+    session: Session,
+    sessionId: Int,
+    navController: NavController
 ) {
     Card(
         modifier = Modifier
@@ -72,10 +75,12 @@ fun SessionCard(
                 Spacer(modifier = Modifier.height(20.dp))
                 FilledTonalButton(
                     colors = ButtonDefaults.filledTonalButtonColors(),
-                    onClick = {}
+                    onClick = {
+                        navController.navigate("SessionDetailsScreen/${sessionId}")
+                    }
                 ) {
                     Text(
-                        text = "View Details",
+                        text = "View Session",
                         style = MaterialTheme.typography.bodyMedium,
                         fontStyle = FontStyle.Italic,
                         color = MaterialTheme.colorScheme.onSurface,

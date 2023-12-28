@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation
+package com.mrxx0.weightlifting.presentation.session
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,16 +10,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
+import com.mrxx0.weightlifting.data.mappers.toSession
+import com.mrxx0.weightlifting.presentation.SessionViewModel
+import com.mrxx0.weightlifting.presentation.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +68,12 @@ fun SessionMainScreen(
             }
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { TopBarSessionMainScreen(scrollBehavior = scrollBehavior) }
+        topBar = {
+            TopBar(
+                scrollBehavior = scrollBehavior,
+                title = stringResource(id = R.string.your_program)
+            )
+        }
 
     ) { contentPadding ->
         Box(
@@ -81,31 +86,19 @@ fun SessionMainScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (!listSession.isNullOrEmpty()) {
+                if (listSession != null) {
                     LazyColumn {
-                        items(count = viewModel.sessionList.value!!.size) {
-                            index ->
-                            val session = listSession!![index]
-                            SessionCard(session = session)
+                        items(count = listSession!!.size) { index ->
+                            val session = listSession!![index].toSession()
+                            SessionCard(
+                                session = session,
+                                sessionId = session.id,
+                                navController = navController
+                            )
                         }
                     }
                 }
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBarSessionMainScreen(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = {
-            Text(
-                text = stringResource(R.string.your_program),
-                style = typography.headlineSmall,
-            )
-        },
-        modifier = modifier
-    )
 }

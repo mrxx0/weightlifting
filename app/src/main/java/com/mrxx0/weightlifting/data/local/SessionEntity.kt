@@ -13,30 +13,45 @@ data class SessionEntity(
     @ColumnInfo(defaultValue = "0")
     val id: Int = 0,
     val day: String,
-    val exercises: List<exercisesEntity>? = null
+    val exercises: List<ExercisesEntity>? = null
 )
 
 @Entity
-data class exercisesEntity(
+data class ExercisesEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String? = null,
-    val series: Int = 0,
-    val repetitions: Int = 0,
-    val restTime: Int = 0,
+    val series: List<SeriesEntity>? = null,
     val sessionId: Int = 0
+)
+
+data class SeriesEntity(
+    val repetitions: Int,
+    val weight: Int,
+    val restTime: Int
 )
 
 
 class Converters {
     @TypeConverter
-    fun fromString(value: String?): List<exercisesEntity>? {
-        val listType = object : TypeToken<List<exercisesEntity>>() {}.type
+    fun fromString(value: String?): List<ExercisesEntity>? {
+        val listType = object : TypeToken<List<ExercisesEntity>>() {}.type
         return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromList(list: List<exercisesEntity>?): String? {
+    fun fromList(list: List<ExercisesEntity>?): String? {
+        return Gson().toJson(list)
+    }
+
+    @TypeConverter
+    fun fromSeriesString(value: String?): List<SeriesEntity>? {
+        val listType = object : TypeToken<List<SeriesEntity>>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromSeriesList(list: List<SeriesEntity>?): String? {
         return Gson().toJson(list)
     }
 }

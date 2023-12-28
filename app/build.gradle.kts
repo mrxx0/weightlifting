@@ -84,7 +84,7 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:$androidxHiltVersion")
 
     // Gson
-    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // LiveData
     val liveDataVersion = "1.5.4"
@@ -93,6 +93,6 @@ dependencies {
 
     // Compose Navigation
     val navVersion = "2.5.3"
-    implementation ("androidx.navigation:navigation-compose:$navVersion")
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
 }

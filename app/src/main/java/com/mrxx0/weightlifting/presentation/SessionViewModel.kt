@@ -4,13 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mrxx0.weightlifting.data.local.ExercisesEntity
+import com.mrxx0.weightlifting.data.local.SeriesEntity
 import com.mrxx0.weightlifting.data.local.SessionDatabase
 import com.mrxx0.weightlifting.data.local.SessionEntity
 import com.mrxx0.weightlifting.data.local.SessionRepository
-import com.mrxx0.weightlifting.data.local.exercisesEntity
-import com.mrxx0.weightlifting.data.mappers.toSession
+import com.mrxx0.weightlifting.domain.Exercises
 import com.mrxx0.weightlifting.domain.Session
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,9 +23,17 @@ class SessionViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val sessionRepository = SessionRepository(sessionDatabase.dao)
+    private val allSessions = sessionRepository.allSessions
 
-    private val _sessionList = MutableLiveData<List<Session>?>()
-    val sessionList: LiveData<List<Session>?> get() = _sessionList
+    private val _session = MutableLiveData<Session>()
+    val session: LiveData<Session> get() = _session
+
+    private val _exercise = MutableLiveData<Exercises>()
+    val exercise: LiveData<Exercises> get() = _exercise
+
+    private val _sessionList = MutableLiveData<List<SessionEntity>>()
+    val sessionList: LiveData<List<SessionEntity>> get() = _sessionList
+
 
     init {
         loadSession()
@@ -30,42 +41,60 @@ class SessionViewModel @Inject constructor(
 
     fun createSession(day: String) {
         viewModelScope.launch {
-            val exercise = exercisesEntity(
+            val series = SeriesEntity(
+                repetitions = 8,
+                weight = 140,
+                restTime = 120
+            )
+            val seriesList = mutableListOf<SeriesEntity>()
+            repeat(4) {
+                seriesList.add(series)
+            }
+            val exercise = ExercisesEntity(
                 id = 0,
                 name = "Squat",
-                restTime = 200,
-                repetitions = 8,
-                series = 5
+                series = seriesList
             )
-            val exercisesList = mutableListOf<exercisesEntity>()
+
+            val exercisesList = mutableListOf<ExercisesEntity>()
             repeat(5) {
                 exercisesList.add(exercise)
             }
             val sessionEntity = SessionEntity(day = day, exercises = exercisesList)
             sessionRepository.insertSession(sessionEntity)
-            val currentList = _sessionList.value ?: emptyList()
-            val updatedList = currentList + sessionEntity.toSession()
-            _sessionList.postValue(updatedList)
         }
     }
 
-    fun deleteSession(session: SessionEntity) {
-        viewModelScope.launch {
-            sessionRepository.deleteSession(session)
+    fun getSessionById(sessionId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val newSession = sessionRepository.getSessionById(sessionId)
+                _session.postValue(newSession)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
         }
     }
+
+    fun getExerciseById(exerciseId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val newExercise = sessionRepository.getExerciseById(exerciseId)
+                _exercise.postValue(newExercise)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+
 
     fun loadSession() {
-        viewModelScope.launch {
-            _sessionList.value = sessionRepository.getAllSessions()
-        }
-    }
-
-    fun deleteAllSession() {
-        viewModelScope.launch {
-            sessionRepository.deleteAllSession()
-            val currentList = sessionRepository.getAllSessions()
-            _sessionList.postValue(currentList)
+        CoroutineScope(Dispatchers.IO).launch {
+            allSessions.collect {
+                _sessionList.postValue(it)
+            }
         }
     }
 }

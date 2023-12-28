@@ -9,11 +9,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mrxx0.weightlifting.presentation.SessionCreatorScreen
-import com.mrxx0.weightlifting.presentation.SessionMainScreen
+import androidx.navigation.navArgument
+import com.mrxx0.weightlifting.presentation.exercise.ExerciseDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.SessionCreatorScreen
+import com.mrxx0.weightlifting.presentation.session.SessionDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.SessionMainScreen
 import com.mrxx0.weightlifting.ui.theme.WeightliftingTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,17 +36,38 @@ class MainActivity : ComponentActivity() {
                     val context = LocalContext.current
 
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = stringResource(id = R.string.route_main_screen)) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = stringResource(id = R.string.route_main_screen)
+                    ) {
                         composable(context.resources.getString(R.string.route_main_screen)) {
                             SessionMainScreen(navController = navController)
                         }
                         composable(context.resources.getString(R.string.route_session_creator_screen)) {
                             SessionCreatorScreen(navController = navController)
                         }
-//                        composable("sessionDetailsScreen/{sessionDay}") {
-//                            it.arguments?.getString("sessionDay")
-//                                ?.let { it1 -> SessionDetailsScreen(navController, it1) }
-//                        }
+                        composable(
+                            "SessionDetailsScreen/{sessionId}",
+                            arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
+                        ) {
+                            it.arguments?.getInt("sessionId")?.let { it1 ->
+                                SessionDetailsScreen(
+                                    navController = navController,
+                                    it1
+                                )
+                            }
+                        }
+                        composable(
+                            "ExerciseDetailsScreen/{exerciseId}",
+                            arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
+                        ) {
+                            it.arguments?.getInt("exerciseId")?.let { it1 ->
+                                ExerciseDetailsScreen(
+                                    navController = navController,
+                                    it1
+                                )
+                            }
+                        }
                     }
                 }
             }

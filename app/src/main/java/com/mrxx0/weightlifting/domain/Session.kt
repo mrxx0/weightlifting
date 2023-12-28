@@ -3,13 +3,19 @@ package com.mrxx0.weightlifting.domain
 import java.io.Serializable
 
 data class Session(
+    val id: Int,
     val day: String,
-    val exercises: List<exercises>? = null
+    val exercises: List<Exercises>? = null
 ) : Serializable
 
-data class exercises(
+data class Exercises(
+    val id: Int,
     val name: String? = null,
-    val series: Int = 0,
-    val repetitions: Int = 0,
-    val restTime: Int = 0
+    val series: List<Series>? = null
+)
+
+data class Series(
+    val repetitions: Int,
+    val weight: Int,
+    val restTime: Int
 )
