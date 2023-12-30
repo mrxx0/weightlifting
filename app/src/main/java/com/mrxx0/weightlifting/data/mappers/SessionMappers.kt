@@ -9,8 +9,8 @@ import com.mrxx0.weightlifting.domain.Set
 
 fun SessionEntity.toSession(): Session {
     return Session(
-        id = id,
-        day = day,
+        id = this.id,
+        day = this.day,
         exercise = this.exercise?.map { it.toExercises() } as MutableList<Exercises>?
     )
 }
@@ -26,18 +26,19 @@ fun ExerciseEntity.toExercises(): Exercises {
 
 fun SetEntity.toSets(): Set {
     return Set(
-        id = id,
-        repetitions = repetitions,
-        weight = weight,
-        restTime = restTime,
-        exerciseId = this.exerciseId
+        id = this.id,
+        repetitions = this.repetitions,
+        weight = this.weight,
+        restTime = this.restTime,
+        exerciseId = this.exerciseId,
+        clone = this.clone
     )
 }
 
 fun Session.toSessionEntity(): SessionEntity {
     return SessionEntity(
-        id = id,
-        day = day,
+        id = this.id,
+        day = this.day,
         exercise = this.exercise?.map { it.toExerciseEntity() }?.toMutableList()
     )
 }
@@ -45,7 +46,7 @@ fun Session.toSessionEntity(): SessionEntity {
 fun Exercises.toExerciseEntity(): ExerciseEntity {
     return ExerciseEntity(
         id = this.id ?: 0,
-        name = name,
+        name = this.name,
         sessionId = this.sessionId,
         sets = this.sets?.map { it.toSetEntity() }
     )
@@ -53,10 +54,11 @@ fun Exercises.toExerciseEntity(): ExerciseEntity {
 
 fun Set.toSetEntity(): SetEntity {
     return SetEntity(
-        id = id,
-        repetitions = repetitions,
-        weight = weight,
-        restTime = restTime,
-        exerciseId = this.exerciseId
+        id = this.id,
+        repetitions = this.repetitions,
+        weight = this.weight,
+        restTime = this.restTime,
+        exerciseId = this.exerciseId,
+        clone = this.clone
     )
 }

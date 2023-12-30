@@ -1,7 +1,6 @@
 package com.mrxx0.weightlifting.presentation.exercise
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,6 +52,7 @@ fun ExerciseCreatorScreen(
     var errorText by remember { mutableStateOf("") }
     val viewModel = hiltViewModel<SessionViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
 
     Scaffold(
@@ -98,7 +98,6 @@ fun ExerciseCreatorScreen(
             ) {
                 Column(
                     modifier = Modifier
-                        .background(Color.Red)
                         .wrapContentHeight()
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,7 +108,7 @@ fun ExerciseCreatorScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        Text("EXERCISE NAME")
+                        Text(context.resources.getString(R.string.exercise_name))
                     }
                     Row(
                         modifier = Modifier

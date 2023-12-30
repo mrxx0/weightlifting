@@ -59,10 +59,10 @@ fun ExerciseDetailsScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_exercise)
+                        contentDescription = stringResource(id = R.string.add_set)
                     )
                     Spacer(modifier = Modifier.width(width = 8.dp))
-                    Text(text = stringResource(id = R.string.add_exercise))
+                    Text(text = stringResource(id = R.string.add_set))
                 }
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
