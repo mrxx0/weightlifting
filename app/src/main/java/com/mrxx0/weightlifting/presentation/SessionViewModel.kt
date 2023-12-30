@@ -11,7 +11,7 @@ import com.mrxx0.weightlifting.data.local.SessionRepository
 import com.mrxx0.weightlifting.data.mappers.toExercises
 import com.mrxx0.weightlifting.data.mappers.toSession
 import com.mrxx0.weightlifting.domain.Exercises
-import com.mrxx0.weightlifting.domain.Series
+import com.mrxx0.weightlifting.domain.Sets
 import com.mrxx0.weightlifting.domain.Session
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +27,7 @@ class SessionViewModel @Inject constructor(
     private val sessionRepository = SessionRepository(
         sessionDatabase.sessionDao(),
         sessionDatabase.exercisesDao(),
-        sessionDatabase.seriesDao()
+        sessionDatabase.setsDao()
     )
 
     private val _allSessions = MutableLiveData<List<Session>>()
@@ -38,8 +38,8 @@ class SessionViewModel @Inject constructor(
 
     private val _exercise = MutableLiveData<Exercises>()
     val exercise: LiveData<Exercises> get() = _exercise
-    private val _series = MutableLiveData<Series>()
-    val series: LiveData<Series> get() = _series
+    private val _sets = MutableLiveData<Sets>()
+    val sets: LiveData<Sets> get() = _sets
 
     private val _exerciseList = MutableLiveData<List<ExercisesEntity>>()
     val exerciseList: LiveData<List<ExercisesEntity>> get() = _exerciseList

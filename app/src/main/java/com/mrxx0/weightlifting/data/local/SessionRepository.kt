@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 class SessionRepository(
     private val sessionDao: SessionDao,
     private val exercisesDao: ExercisesDao,
-    private val seriesDao: SeriesDao
+    private val setsDao: SetsDao
 ) {
 
     suspend fun insertSession(session: SessionEntity) = withContext(Dispatchers.IO) {
@@ -50,20 +50,20 @@ class SessionRepository(
         exercisesDao.getExerciseById(exerciseId)
     }
 
-    suspend fun insertSeries(series: SeriesEntity) = withContext(Dispatchers.IO) {
-        seriesDao.insertSeries(series)
+    suspend fun insertSets(sets: SetsEntity) = withContext(Dispatchers.IO) {
+        setsDao.insertSets(sets)
     }
 
-    suspend fun updateSeries(series: SeriesEntity) = withContext(Dispatchers.IO) {
-        seriesDao.updateSeries(series)
+    suspend fun updateSets(sets: SetsEntity) = withContext(Dispatchers.IO) {
+        setsDao.updateSets(sets)
     }
 
-    suspend fun deleteSeries(series: SeriesEntity) = withContext(Dispatchers.IO) {
-        seriesDao.deleteSeries(series)
+    suspend fun deleteSets(sets: SetsEntity) = withContext(Dispatchers.IO) {
+        setsDao.deleteSets(sets)
     }
 
-    suspend fun getSeriesForExercises(exercisesId: Int): List<SeriesEntity> =
+    suspend fun getSetsForExercises(exercisesId: Int): List<SetsEntity> =
         withContext(Dispatchers.IO) {
-            seriesDao.getSeriesForExercises(exercisesId)
+            setsDao.getSetsForExercises(exercisesId)
         }
 }

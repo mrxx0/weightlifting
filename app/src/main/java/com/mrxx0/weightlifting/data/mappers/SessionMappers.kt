@@ -1,10 +1,10 @@
 package com.mrxx0.weightlifting.data.mappers
 
 import com.mrxx0.weightlifting.data.local.ExercisesEntity
-import com.mrxx0.weightlifting.data.local.SeriesEntity
+import com.mrxx0.weightlifting.data.local.SetsEntity
 import com.mrxx0.weightlifting.data.local.SessionEntity
 import com.mrxx0.weightlifting.domain.Exercises
-import com.mrxx0.weightlifting.domain.Series
+import com.mrxx0.weightlifting.domain.Sets
 import com.mrxx0.weightlifting.domain.Session
 
 fun SessionEntity.toSession(): Session {
@@ -20,12 +20,12 @@ fun ExercisesEntity.toExercises(): Exercises {
         id = this.id,
         name = this.name,
         sessionId = this.sessionId,
-        series = this.series?.map { it.toSeries() }
+        sets = this.sets?.map { it.toSets() }
     )
 }
 
-fun SeriesEntity.toSeries(): Series {
-    return Series(
+fun SetsEntity.toSets(): Sets {
+    return Sets(
         id = id,
         repetitions = repetitions,
         weight = weight,
@@ -47,12 +47,12 @@ fun Exercises.toExercisesEntity(): ExercisesEntity {
         id = this.id ?: 0,
         name = name,
         sessionId = this.sessionId,
-        series = this.series?.map { it.toSeriesEntity() }
+        sets = this.sets?.map { it.toSetsEntity() }
     )
 }
 
-fun Series.toSeriesEntity(): SeriesEntity {
-    return SeriesEntity(
+fun Sets.toSetsEntity(): SetsEntity {
+    return SetsEntity(
         id = id,
         repetitions = repetitions,
         weight = weight,

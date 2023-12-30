@@ -12,10 +12,10 @@ data class Exercises(
     val id: Int? = null,
     val name: String? = null,
     val sessionId: Int,
-    val series: List<Series>? = null
+    val sets: List<Sets>? = null
 )
 
-data class Series(
+data class Sets(
     val id: Int,
     val repetitions: Int,
     val weight: Int,

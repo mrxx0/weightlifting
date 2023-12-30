@@ -44,16 +44,16 @@ interface ExercisesDao {
 }
 
 @Dao
-interface SeriesDao {
+interface SetsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSeries(series: SeriesEntity)
+    suspend fun insertSets(sets: SetsEntity)
 
     @Update
-    suspend fun updateSeries(series: SeriesEntity)
+    suspend fun updateSets(sets: SetsEntity)
 
     @Delete
-    suspend fun deleteSeries(series: SeriesEntity)
+    suspend fun deleteSets(sets: SetsEntity)
 
-    @Query("SELECT * FROM series WHERE exercisesId = :exercisesId")
-    suspend fun getSeriesForExercises(exercisesId: Int): List<SeriesEntity>
+    @Query("SELECT * FROM sets WHERE exercisesId = :exercisesId")
+    suspend fun getSetsForExercises(exercisesId: Int): List<SetsEntity>
 }

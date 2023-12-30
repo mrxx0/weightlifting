@@ -70,9 +70,9 @@ fun ExerciseCard(
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier.padding(10.dp)
                 )
-                if (exercise.series != null) {
+                if (exercise.sets != null) {
                     Text(
-                        text = "Series: " + exercise.series.size,
+                        text = "Sets: " + exercise.sets.size,
                         fontStyle = FontStyle.Italic,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onTertiaryContainer,

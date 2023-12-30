@@ -29,12 +29,12 @@ data class ExercisesEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String? = null,
-    val series: List<SeriesEntity>? = null,
+    val sets: List<SetsEntity>? = null,
     val sessionId: Int // Foreign key linking to SessionEntity
 )
 
 @Entity(
-    tableName = "series",
+    tableName = "sets",
     foreignKeys = [ForeignKey(
         entity = ExercisesEntity::class,
         parentColumns = ["id"],
@@ -42,7 +42,7 @@ data class ExercisesEntity(
         onDelete = CASCADE
     )]
 )
-data class SeriesEntity(
+data class SetsEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val repetitions: Int,
@@ -65,13 +65,13 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromSeriesString(value: String?): List<SeriesEntity>? {
-        val listType = object : TypeToken<List<SeriesEntity>>() {}.type
+    fun fromSetsString(value: String?): List<SetsEntity>? {
+        val listType = object : TypeToken<List<SetsEntity>>() {}.type
         return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromSeriesList(list: List<SeriesEntity>?): String? {
+    fun fromSetsList(list: List<SetsEntity>?): String? {
         return Gson().toJson(list)
     }
 }

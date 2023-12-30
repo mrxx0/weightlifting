@@ -5,12 +5,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [SessionEntity::class, ExercisesEntity::class, SeriesEntity::class],
+    entities = [SessionEntity::class, ExercisesEntity::class, SetsEntity::class],
     version = 1
 )
 @TypeConverters(Converters::class)
 abstract class SessionDatabase : RoomDatabase() {
     abstract fun sessionDao(): SessionDao
     abstract fun exercisesDao(): ExercisesDao
-    abstract fun seriesDao(): SeriesDao
+    abstract fun setsDao(): SetsDao
 }
