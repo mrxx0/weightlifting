@@ -19,6 +19,7 @@ import com.mrxx0.weightlifting.presentation.exercise.ExerciseDetailsScreen
 import com.mrxx0.weightlifting.presentation.session.SessionCreatorScreen
 import com.mrxx0.weightlifting.presentation.session.SessionDetailsScreen
 import com.mrxx0.weightlifting.presentation.session.SessionMainScreen
+import com.mrxx0.weightlifting.presentation.set.SetCreatorScreen
 import com.mrxx0.weightlifting.ui.theme.WeightliftingTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,6 +76,17 @@ class MainActivity : ComponentActivity() {
                         ) {
                             it.arguments?.getInt("sessionId")?.let { it1 ->
                                 ExerciseCreatorScreen(
+                                    navController = navController,
+                                    it1
+                                )
+                            }
+                        }
+                        composable(
+                            "SetCreatorScreen/{exerciseId}",
+                            arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
+                        ) {
+                            it.arguments?.getInt("exerciseId")?.let { it1 ->
+                                SetCreatorScreen(
                                     navController = navController,
                                     it1
                                 )

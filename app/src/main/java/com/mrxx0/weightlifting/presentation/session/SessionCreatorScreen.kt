@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
+import com.mrxx0.weightlifting.data.local.session.SessionEntity
 import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
 
@@ -53,7 +54,10 @@ fun SessionCreatorScreen(
                     if (sessionDay.isBlank()) {
                         errorText = "Session day cannot be empty !"
                     } else {
-                        viewModel.createSession(sessionDay)
+                        val session = SessionEntity(
+                            day = sessionDay
+                        )
+                        viewModel.createSession(session)
                         navController.popBackStack()
                     }
                 },

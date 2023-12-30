@@ -5,9 +5,9 @@
     <string name="create_session">Create</string>
     <string name="save_session">Save session</string>
     <string name="add_exercise">Exercise</string>
-    <string name="exercises">Exercises</string>
     <string name="exercise_name">Name</string>
     <string name="add_set">Set</string>
+    <string name="new_set">New set</string>
     <string name="new_exercise">New exercise</string>
     <string name="your_program">Your program</string>
     <string name="day">Day</string>

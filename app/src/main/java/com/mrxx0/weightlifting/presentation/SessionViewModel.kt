@@ -8,6 +8,7 @@ import com.mrxx0.weightlifting.data.local.Repository
 import com.mrxx0.weightlifting.data.local.WeightliftingDatabase
 import com.mrxx0.weightlifting.data.local.exercise.ExerciseEntity
 import com.mrxx0.weightlifting.data.local.session.SessionEntity
+import com.mrxx0.weightlifting.data.local.set.SetEntity
 import com.mrxx0.weightlifting.data.mappers.toExercises
 import com.mrxx0.weightlifting.data.mappers.toSession
 import com.mrxx0.weightlifting.domain.Exercises
@@ -49,25 +50,40 @@ class SessionViewModel @Inject constructor(
         loadSession()
     }
 
-    fun createSession(day: String) {
+    fun createSession(session: SessionEntity) {
         viewModelScope.launch {
-            val sessionEntity = SessionEntity(day = day)
-            repository.insertSession(sessionEntity)
+            repository.insertSession(session)
         }
     }
 
     fun createExercise(exercise: ExerciseEntity) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.insertExercise(exercise)
             val updateSession = repository.getSessionById(exercise.sessionId)
-            if (updateSession.exercise.isNullOrEmpty()) {
-                updateSession.exercise = mutableListOf(exercise)
-            } else {
-                updateSession.exercise!!.add(exercise)
-            }
-            repository.updateSession(updateSession)
-            CoroutineScope(Dispatchers.IO).launch {
+            updateSession.let {
+                if (it.exercise.isNullOrEmpty()) {
+                    it.exercise = mutableListOf(exercise)
+                } else {
+                    it.exercise!!.add(exercise)
+                }
+                repository.updateSession(updateSession)
                 _session.postValue(updateSession.toSession())
+            }
+        }
+    }
+
+    fun createSet(set: SetEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertSet(set)
+            val updateExercise = repository.getExerciseById(set.exerciseId)
+            updateExercise.let {
+                if (it.sets.isNullOrEmpty()) {
+                    it.sets = mutableListOf(set)
+                } else {
+                    it.sets!!.add(set)
+                }
+                repository.updateExercise(updateExercise)
+                _exercise.postValue(updateExercise.toExercises())
             }
         }
     }

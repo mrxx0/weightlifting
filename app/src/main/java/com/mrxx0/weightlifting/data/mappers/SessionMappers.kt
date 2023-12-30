@@ -48,7 +48,7 @@ fun Exercises.toExerciseEntity(): ExerciseEntity {
         id = this.id ?: 0,
         name = this.name,
         sessionId = this.sessionId,
-        sets = this.sets?.map { it.toSetEntity() }
+        sets = this.sets?.map { it.toSetEntity() }?.toMutableList()
     )
 }
 

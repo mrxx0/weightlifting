@@ -17,6 +17,6 @@ import com.mrxx0.weightlifting.data.local.set.SetEntity
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String? = null,
-    val sets: List<SetEntity>? = null,
+    var sets: MutableList<SetEntity>? = null,
     val sessionId: Int // Foreign key linking to SessionEntity
 )

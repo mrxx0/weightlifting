@@ -53,6 +53,7 @@ fun ExerciseDetailsScreen(
                 ExtendedFloatingActionButton(
                     onClick = {
                         // TODO : Go to exercise editor screen
+                        navController.navigate(route = "SetCreatorScreen/${exerciseId}")
                     },
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
