@@ -31,7 +31,7 @@ fun SetEntity.toSets(): Set {
         weight = this.weight,
         restTime = this.restTime,
         exerciseId = this.exerciseId,
-        clone = this.clone
+        repeat = this.repeat
     )
 }
 
@@ -59,6 +59,6 @@ fun Set.toSetEntity(): SetEntity {
         weight = this.weight,
         restTime = this.restTime,
         exerciseId = this.exerciseId,
-        clone = this.clone
+        repeat = this.repeat
     )
 }

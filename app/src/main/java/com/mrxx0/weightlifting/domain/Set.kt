@@ -6,5 +6,5 @@ data class Set(
     val weight: Int,
     val restTime: Int,
     val exerciseId: Int,
-    val clone: Int
+    val repeat: Int
 )

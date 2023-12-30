@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +32,7 @@ import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
+import com.mrxx0.weightlifting.presentation.set.SetCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,6 +83,26 @@ fun ExerciseDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // TODO : LazyColumn to display exercise
+
+                    LazyColumn {
+                        if (exercise!!.sets != null) {
+                            items(count = exercise!!.sets!!.size) { index ->
+                                val set = exercise!!.sets!![index]
+                                if (set.repeat > 0) {
+                                    for (i in 0 until set.repeat) {
+                                        SetCard(set)
+                                    }
+                                } else {
+                                    SetCard(set)
+                                }
+                            }
+                        } else {
+                            item {
+                                Text("Looks like there are no set here ! Add one !")
+                            }
+                        }
+                        item { Spacer(modifier = Modifier.padding(50.dp)) }
+                    }
                 }
             }
         }

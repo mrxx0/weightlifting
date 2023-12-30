@@ -88,6 +88,18 @@ class SessionViewModel @Inject constructor(
         }
     }
 
+    fun getSetValueFromExercise(sets: List<Set>): Int {
+        var total = 0
+        for (setDetails in sets) {
+            if (setDetails.repeat > 0) {
+                total += setDetails.repeat
+            } else {
+                total += 1
+            }
+        }
+        return total
+    }
+
     fun getSessionById(sessionId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

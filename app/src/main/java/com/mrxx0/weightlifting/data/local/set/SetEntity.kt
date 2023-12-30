@@ -22,5 +22,5 @@ data class SetEntity(
     val weight: Int,
     val restTime: Int,
     val exerciseId: Int,
-    val clone: Int
+    val repeat: Int
 )
