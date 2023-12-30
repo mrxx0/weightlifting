@@ -2,63 +2,58 @@ package com.mrxx0.weightlifting.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Embedded
-import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Relation
-import androidx.room.Transaction
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SessionDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSession(session: SessionEntity)
 
-    @Query("DELETE FROM SessionEntity WHERE id = :sessionId")
-    suspend fun deleteSession(sessionId: Int)
-
-    @Query("DELETE FROM SessionEntity")
-    suspend fun deleteAllSession()
-
-    @Query("SELECT * FROM ExercisesEntity WHERE sessionId = :sessionId")
-    fun getExercisesForSession(sessionId: Int): Flow<List<ExercisesEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExercises(exercises: List<ExercisesEntity>)
+    @Update
+    suspend fun updateSession(session: SessionEntity)
 
     @Delete
-    suspend fun deleteExercise(exercise: ExercisesEntity)
+    suspend fun deleteSession(session: SessionEntity)
+
+    @Query("SELECT * FROM sessions")
+    suspend fun getAllSessions(): List<SessionEntity>
+
+    @Query("SELECT * FROM sessions WHERE id = :sessionId")
+    suspend fun getSessionById(sessionId: Int): SessionEntity
+}
+
+@Dao
+interface ExercisesDao {
+    @Insert
+    suspend fun insertExercises(exercises: ExercisesEntity)
 
     @Update
-    suspend fun updateExercise(exercise: ExercisesEntity)
+    suspend fun updateExercises(exercises: ExercisesEntity)
 
-    @Query("SELECT * FROM SessionEntity")
-    fun getAllSessions(): Flow<List<SessionEntity>>
+    @Delete
+    suspend fun deleteExercises(exercises: ExercisesEntity)
 
-    @Query("SELECT * FROM sessionentity WHERE id= :sessionId")
-    suspend fun getSessionById(sessionId: Int): SessionEntity?
+    @Query("SELECT * FROM exercises WHERE sessionId = :sessionId")
+    suspend fun getExercisesForSession(sessionId: Int): List<ExercisesEntity>
 
-    @Query("SELECT * FROM exercisesentity WHERE id = :exerciseId")
-    suspend fun getExerciseById(exerciseId: Int): ExercisesEntity?
+    @Query("SELECT * FROM exercises WHERE id = :exerciseId")
+    suspend fun getExerciseById(exerciseId: Int): ExercisesEntity
+}
 
-    @Query("SELECT id FROM SessionEntity")
-    fun getAllSessionIds(): List<Int>
+@Dao
+interface SeriesDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSeries(series: SeriesEntity)
 
-    @Transaction
-    @Query("SELECT * FROM sessionentity WHERE id = :sessionId")
-    suspend fun getSessionWithExercises(sessionId: Int): SessionWithExercises?
+    @Update
+    suspend fun updateSeries(series: SeriesEntity)
 
-    @Entity
-    data class SessionWithExercises(
-        @Embedded val session: SessionEntity,
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "sessionId"
-        )
-        val exercises: List<ExercisesEntity>
-    )
+    @Delete
+    suspend fun deleteSeries(series: SeriesEntity)
+
+    @Query("SELECT * FROM series WHERE exercisesId = :exercisesId")
+    suspend fun getSeriesForExercises(exercisesId: Int): List<SeriesEntity>
 }

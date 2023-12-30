@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.mrxx0.weightlifting.presentation.exercise.ExerciseCreatorScreen
 import com.mrxx0.weightlifting.presentation.exercise.ExerciseDetailsScreen
 import com.mrxx0.weightlifting.presentation.session.SessionCreatorScreen
 import com.mrxx0.weightlifting.presentation.session.SessionDetailsScreen
@@ -63,6 +64,17 @@ class MainActivity : ComponentActivity() {
                         ) {
                             it.arguments?.getInt("exerciseId")?.let { it1 ->
                                 ExerciseDetailsScreen(
+                                    navController = navController,
+                                    it1
+                                )
+                            }
+                        }
+                        composable(
+                            "ExerciseCreatorScreen/{sessionId}",
+                            arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
+                        ) {
+                            it.arguments?.getInt("sessionId")?.let { it1 ->
+                                ExerciseCreatorScreen(
                                     navController = navController,
                                     it1
                                 )

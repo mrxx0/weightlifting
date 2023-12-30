@@ -45,7 +45,7 @@ fun ExerciseDetailsScreen(
 
     Log.d("ExerciseDetailsScreen", "${exercise}")
     LaunchedEffect(true) {
-        viewModel.getExerciseById(exerciseId)
+        viewModel.getExerciseById(exerciseId = exerciseId)
     }
     if (exercise != null) {
         Scaffold(
@@ -80,15 +80,6 @@ fun ExerciseDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // TODO : LazyColumn to display exercises
-//                LazyColumn {
-//                    items(count = session!!.exercises!!.size) { index ->
-//                        val exercise = session!!.exercises!![index]
-//                        ExerciseCard(
-//                            exercise = exercise
-//                        )
-//                    }
-//                }
-
                 }
             }
         }

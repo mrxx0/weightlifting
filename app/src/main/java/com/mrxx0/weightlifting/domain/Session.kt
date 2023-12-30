@@ -4,18 +4,21 @@ import java.io.Serializable
 
 data class Session(
     val id: Int,
-    val day: String,
-    val exercises: List<Exercises>? = null
+    var day: String,
+    var exercises: MutableList<Exercises>? = null
 ) : Serializable
 
 data class Exercises(
-    val id: Int,
+    val id: Int? = null,
     val name: String? = null,
+    val sessionId: Int,
     val series: List<Series>? = null
 )
 
 data class Series(
+    val id: Int,
     val repetitions: Int,
     val weight: Int,
-    val restTime: Int
+    val restTime: Int,
+    val exercisesId: Int
 )

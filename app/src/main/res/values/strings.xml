@@ -6,10 +6,15 @@
     <string name="save_session">Save session</string>
     <string name="add_exercise">Exercise</string>
     <string name="exercises">Exercises</string>
+    <string name="add_serie">Serie</string>
+    <string name="new_exercise">New exercise</string>
     <string name="your_program">Your program</string>
     <string name="day">Day</string>
+    <string name="exercise">Exercise</string>
+    <string name="create_exercise">Create</string>
     <string name="default_day">Monday</string>
     <string name="route_main_screen">SessionMainScreen</string>
     <string name="route_session_creator_screen">SessionCreatorScreen</string>
     <string name="route_session_details_screen">SessionDetailsScreen</string>
+    <string name="route_exercise_creator_screen">ExerciseCreatorScreen</string>
 </resources>

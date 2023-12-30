@@ -1,42 +1,69 @@
 package com.mrxx0.weightlifting.data.local
 
-import com.mrxx0.weightlifting.data.mappers.toExercises
-import com.mrxx0.weightlifting.data.mappers.toSession
-import com.mrxx0.weightlifting.domain.Exercises
-import com.mrxx0.weightlifting.domain.Session
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SessionRepository(
-    private val sessionDao: SessionDao
+    private val sessionDao: SessionDao,
+    private val exercisesDao: ExercisesDao,
+    private val seriesDao: SeriesDao
 ) {
 
-    val allSessions: Flow<List<SessionEntity>> = sessionDao.getAllSessions()
-
-    fun getExercisesForSession(sessionId: Int): Flow<List<ExercisesEntity>> {
-        return sessionDao.getExercisesForSession(sessionId)
-    }
-
-    suspend fun getSessionById(sessionId: Int): Session? {
-        return sessionDao.getSessionById(sessionId)?.toSession()
-    }
-
-    suspend fun getExerciseById(exerciseId: Int): Exercises? {
-        return sessionDao.getExerciseById(exerciseId)?.toExercises()
-    }
-
-    suspend fun getAllSessionIds(): List<Int> {
-        return sessionDao.getAllSessionIds()
-    }
-
-    suspend fun insertSession(session: SessionEntity) {
+    suspend fun insertSession(session: SessionEntity) = withContext(Dispatchers.IO) {
         sessionDao.insertSession(session)
     }
 
-    suspend fun deleteSession(sessionId: Int) {
-        sessionDao.deleteSession(sessionId)
+    suspend fun updateSession(session: SessionEntity) = withContext(Dispatchers.IO) {
+        sessionDao.updateSession(session)
     }
 
-    suspend fun deleteAllSession() {
-        sessionDao.deleteAllSession()
+    suspend fun deleteSession(session: SessionEntity) = withContext(Dispatchers.IO) {
+        sessionDao.deleteSession(session)
     }
+
+    suspend fun getAllSessions(): List<SessionEntity> = withContext(Dispatchers.IO) {
+        sessionDao.getAllSessions()
+    }
+
+    suspend fun getSessionById(sessionId: Int): SessionEntity = withContext(Dispatchers.IO) {
+        sessionDao.getSessionById(sessionId)
+    }
+
+    suspend fun insertExercises(exercises: ExercisesEntity) = withContext(Dispatchers.IO) {
+        exercisesDao.insertExercises(exercises)
+    }
+
+    suspend fun updateExercises(exercises: ExercisesEntity) = withContext(Dispatchers.IO) {
+        exercisesDao.updateExercises(exercises)
+    }
+
+    suspend fun deleteExercises(exercises: ExercisesEntity) = withContext(Dispatchers.IO) {
+        exercisesDao.deleteExercises(exercises)
+    }
+
+    suspend fun getExercisesForSession(sessionId: Int): List<ExercisesEntity> =
+        withContext(Dispatchers.IO) {
+            exercisesDao.getExercisesForSession(sessionId)
+        }
+
+    suspend fun getExerciseById(exerciseId: Int): ExercisesEntity = withContext(Dispatchers.IO) {
+        exercisesDao.getExerciseById(exerciseId)
+    }
+
+    suspend fun insertSeries(series: SeriesEntity) = withContext(Dispatchers.IO) {
+        seriesDao.insertSeries(series)
+    }
+
+    suspend fun updateSeries(series: SeriesEntity) = withContext(Dispatchers.IO) {
+        seriesDao.updateSeries(series)
+    }
+
+    suspend fun deleteSeries(series: SeriesEntity) = withContext(Dispatchers.IO) {
+        seriesDao.deleteSeries(series)
+    }
+
+    suspend fun getSeriesForExercises(exercisesId: Int): List<SeriesEntity> =
+        withContext(Dispatchers.IO) {
+            seriesDao.getSeriesForExercises(exercisesId)
+        }
 }

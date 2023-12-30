@@ -1,34 +1,54 @@
 package com.mrxx0.weightlifting.data.local
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-@Entity
+@Entity(tableName = "sessions")
 data class SessionEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(defaultValue = "0")
     val id: Int = 0,
     val day: String,
-    val exercises: List<ExercisesEntity>? = null
+    var exercises: MutableList<ExercisesEntity>? = null
 )
 
-@Entity
+@Entity(
+    tableName = "exercises",
+    foreignKeys = [ForeignKey(
+        entity = SessionEntity::class,
+        parentColumns = ["id"],
+        childColumns = ["sessionId"],
+        onDelete = CASCADE
+    )]
+)
 data class ExercisesEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val name: String? = null,
     val series: List<SeriesEntity>? = null,
-    val sessionId: Int = 0
+    val sessionId: Int // Foreign key linking to SessionEntity
 )
 
+@Entity(
+    tableName = "series",
+    foreignKeys = [ForeignKey(
+        entity = ExercisesEntity::class,
+        parentColumns = ["id"],
+        childColumns = ["exercisesId"],
+        onDelete = CASCADE
+    )]
+)
 data class SeriesEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val repetitions: Int,
     val weight: Int,
-    val restTime: Int
+    val restTime: Int,
+    val exercisesId: Int // Foreign key linking to ExercisesEntity
 )
 
 

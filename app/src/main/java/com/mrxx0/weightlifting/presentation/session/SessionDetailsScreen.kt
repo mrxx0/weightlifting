@@ -1,5 +1,6 @@
 package com.mrxx0.weightlifting.presentation.session
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
+import com.mrxx0.weightlifting.data.mappers.toExercises
 import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
 import com.mrxx0.weightlifting.presentation.exercise.ExerciseCard
@@ -42,10 +44,13 @@ fun SessionDetailsScreen(
     val viewModel = hiltViewModel<SessionViewModel>()
 
     val session by viewModel.session.observeAsState()
+    val exercisesList by viewModel.exerciseList.observeAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    LaunchedEffect(true) {
+    LaunchedEffect(key1 = session, key2 = session?.exercises) {
+        Log.d("SessionDetailsScreen", "session updated")
         viewModel.getSessionById(sessionId = sessionId)
+        viewModel.loadExercises(sessionId = sessionId)
     }
 
     if (session != null) {
@@ -54,6 +59,8 @@ fun SessionDetailsScreen(
                 ExtendedFloatingActionButton(
                     onClick = {
                         // TODO : Go to exercise editor screen
+                        navController.navigate("ExerciseCreatorScreen/${sessionId}")
+
                     },
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
@@ -82,12 +89,18 @@ fun SessionDetailsScreen(
                 ) {
                     // TODO : LazyColumn to display exercises
                     LazyColumn {
-                        items(count = session!!.exercises!!.size) { index ->
-                            val exercise = session!!.exercises!![index]
-                            ExerciseCard(
-                                exercise = exercise,
-                                navController = navController
-                            )
+                        if (exercisesList != null) {
+                            items(count = exercisesList!!.size) { index ->
+                                val exercise = exercisesList!![index].toExercises()
+                                ExerciseCard(
+                                    exercise = exercise,
+                                    navController = navController
+                                )
+                            }
+                        } else {
+                            item {
+                                Text("Looks like there are no exercises here ! Add one !")
+                            }
                         }
                         item { Spacer(modifier = Modifier.padding(50.dp)) }
                     }

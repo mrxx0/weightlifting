@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
-import com.mrxx0.weightlifting.data.mappers.toSession
 import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
 
@@ -41,7 +40,7 @@ fun SessionMainScreen(
 ) {
 
     val viewModel = hiltViewModel<SessionViewModel>()
-    val listSession by viewModel.sessionList.observeAsState()
+    val listSession by viewModel.allSessions.observeAsState()
     val context = LocalContext.current
 
     LaunchedEffect(true) {
@@ -89,7 +88,7 @@ fun SessionMainScreen(
                 if (listSession != null) {
                     LazyColumn {
                         items(count = listSession!!.size) { index ->
-                            val session = listSession!![index].toSession()
+                            val session = listSession!![index]
                             SessionCard(
                                 session = session,
                                 sessionId = session.id,
