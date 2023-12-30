@@ -79,7 +79,7 @@ fun ExerciseDetailsScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // TODO : LazyColumn to display exercises
+                    // TODO : LazyColumn to display exercise
                 }
             }
         }

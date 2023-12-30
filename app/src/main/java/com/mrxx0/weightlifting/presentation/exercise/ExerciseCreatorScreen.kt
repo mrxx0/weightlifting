@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
-import com.mrxx0.weightlifting.data.local.ExercisesEntity
+import com.mrxx0.weightlifting.data.local.exercise.ExerciseEntity
 import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
 
@@ -62,7 +62,7 @@ fun ExerciseCreatorScreen(
                     if (exerciseName.isBlank()) {
                         errorText = "Exercise name cannot be empty !"
                     } else {
-                        val exercise = ExercisesEntity(
+                        val exercise = ExerciseEntity(
                             name = exerciseName,
                             sessionId = sessionId
                         )

@@ -44,10 +44,10 @@ fun SessionDetailsScreen(
     val viewModel = hiltViewModel<SessionViewModel>()
 
     val session by viewModel.session.observeAsState()
-    val exercisesList by viewModel.exerciseList.observeAsState()
+    val exerciseList by viewModel.exerciseList.observeAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    LaunchedEffect(key1 = session, key2 = session?.exercises) {
+    LaunchedEffect(key1 = session, key2 = session?.exercise) {
         Log.d("SessionDetailsScreen", "session updated")
         viewModel.getSessionById(sessionId = sessionId)
         viewModel.loadExercises(sessionId = sessionId)
@@ -87,11 +87,11 @@ fun SessionDetailsScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // TODO : LazyColumn to display exercises
+                    // TODO : LazyColumn to display exercise
                     LazyColumn {
-                        if (exercisesList != null) {
-                            items(count = exercisesList!!.size) { index ->
-                                val exercise = exercisesList!![index].toExercises()
+                        if (exerciseList != null) {
+                            items(count = exerciseList!!.size) { index ->
+                                val exercise = exerciseList!![index].toExercises()
                                 ExerciseCard(
                                     exercise = exercise,
                                     navController = navController
@@ -99,7 +99,7 @@ fun SessionDetailsScreen(
                             }
                         } else {
                             item {
-                                Text("Looks like there are no exercises here ! Add one !")
+                                Text("Looks like there are no exercise here ! Add one !")
                             }
                         }
                         item { Spacer(modifier = Modifier.padding(50.dp)) }

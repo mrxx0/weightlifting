@@ -68,7 +68,7 @@ fun SessionCard(
                     .weight(2f),
             ) {
                 Text(
-                    text = stringResource(id = R.string.exercises) + ": ${session.exercises?.size ?: 0}",
+                    text = stringResource(id = R.string.exercise) + ": ${session.exercise?.size ?: 0}",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )

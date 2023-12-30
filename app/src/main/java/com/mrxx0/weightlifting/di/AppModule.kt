@@ -2,7 +2,7 @@ package com.mrxx0.weightlifting.di
 
 import android.content.Context
 import androidx.room.Room
-import com.mrxx0.weightlifting.data.local.SessionDatabase
+import com.mrxx0.weightlifting.data.local.WeightliftingDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,10 +16,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSessionDatabase(@ApplicationContext context: Context): SessionDatabase {
+    fun provideWeightliftingDatabase(@ApplicationContext context: Context): WeightliftingDatabase {
         return Room.databaseBuilder(
             context,
-            SessionDatabase::class.java,
+            WeightliftingDatabase::class.java,
             "sessions.db"
         ).build()
     }

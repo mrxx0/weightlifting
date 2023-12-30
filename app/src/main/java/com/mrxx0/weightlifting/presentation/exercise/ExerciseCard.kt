@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.mrxx0.weightlifting.data.mappers.toExercisesEntity
+import com.mrxx0.weightlifting.data.mappers.toExerciseEntity
 import com.mrxx0.weightlifting.domain.Exercises
 
 @Composable
@@ -65,7 +65,7 @@ fun ExerciseCard(
                     modifier = Modifier.padding(10.dp)
                 )
                 Text(
-                    text = exercise.toExercisesEntity().id.toString(),
+                    text = exercise.toExerciseEntity().id.toString(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier.padding(10.dp)
