@@ -10,6 +10,8 @@
     <string name="set_data">Data</string>
     <string name="new_set">New set</string>
     <string name="set_rest_time">Rest time</string>
+    <string name="set_time_minutes">Minutes</string>
+    <string name="set_time_seconds">Seconds</string>
     <string name="set_repetitions">Repetitions</string>
     <string name="set_weight">Weight</string>
     <string name="set_repeat">Repeat</string>

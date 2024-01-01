@@ -1,6 +1,5 @@
 package com.mrxx0.weightlifting.presentation.exercise
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +44,6 @@ fun ExerciseDetailsScreen(
     val viewModel = hiltViewModel<SessionViewModel>()
     val exercise by viewModel.exercise.observeAsState()
 
-    Log.d("ExerciseDetailsScreen", "${exercise}")
     LaunchedEffect(true) {
         viewModel.getExerciseById(exerciseId = exerciseId)
     }
@@ -56,8 +54,8 @@ fun ExerciseDetailsScreen(
                     onClick = {
                         navController.navigate(route = "SetCreatorScreen/${exerciseId}")
                     },
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,

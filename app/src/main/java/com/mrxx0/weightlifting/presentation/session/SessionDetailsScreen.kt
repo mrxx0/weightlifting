@@ -1,6 +1,5 @@
 package com.mrxx0.weightlifting.presentation.session
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -48,7 +47,6 @@ fun SessionDetailsScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = session, key2 = session?.exercise) {
-        Log.d("SessionDetailsScreen", "session updated")
         viewModel.getSessionById(sessionId = sessionId)
         viewModel.loadExercises(sessionId = sessionId)
     }
@@ -61,8 +59,8 @@ fun SessionDetailsScreen(
                         navController.navigate("ExerciseCreatorScreen/${sessionId}")
 
                     },
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,

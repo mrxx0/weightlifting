@@ -77,18 +77,17 @@ fun ExerciseCard(
 
                     }
             ) {
-                if (exercise.sets != null) {
-                    val totalSet = sessionViewModel.getSetValueFromExercise(exercise.sets)
-                    Text(
-                        text = "Sets: " + totalSet,
-                        fontStyle = FontStyle.Italic,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .align(Alignment.CenterStart)
-                    )
-                }
+                val totalSet =
+                    exercise.sets?.let { sessionViewModel.getSetValueFromExercise(it) } ?: 0
+                Text(
+                    text = "Sets: " + totalSet,
+                    fontStyle = FontStyle.Italic,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .align(Alignment.CenterStart)
+                )
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = "Next",

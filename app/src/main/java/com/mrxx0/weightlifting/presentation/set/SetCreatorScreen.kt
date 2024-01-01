@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Replay
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +42,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -73,7 +73,7 @@ fun SetCreatorScreen(
                         repetitions = setViewModel.repetitions.value,
                         repeat = setViewModel.repeat.value,
                         weight = setViewModel.weight.value,
-                        restTime = setViewModel.restTime.value,
+                        restTime = setViewModel.convertTimeToSeconds(),
                         exerciseId = exerciseId
                     )
                     sessionViewModel.createSet(set)
@@ -138,10 +138,11 @@ fun SetCreatorScreen(
                         icon = Icons.Default.Replay
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    SetDataPicker(
-                        itemDisplay = context.resources.getString(R.string.set_rest_time),
-                        updateValue = setViewModel::updateRestTime,
-                        icon = Icons.Default.Timer
+                    SetRestTimePicker(
+                        itemDisplayMinutes = context.resources.getString(R.string.set_time_minutes),
+                        itemDisplaySeconds = context.resources.getString(R.string.set_time_seconds),
+                        updateSeconds = setViewModel::updateRestTimeSeconds,
+                        updateMinutes = setViewModel::updateRestTimeMinutes,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     SetDataPicker(
@@ -153,7 +154,8 @@ fun SetCreatorScreen(
                     SetDataPicker(
                         itemDisplay = context.resources.getString(R.string.set_repeat),
                         updateValue = setViewModel::updateRepeat,
-                        icon = Icons.Default.Repeat
+                        icon = Icons.Default.Repeat,
+                        action = ImeAction.Done
                     )
                 }
 
@@ -166,7 +168,8 @@ fun SetCreatorScreen(
 fun SetDataPicker(
     itemDisplay: String,
     updateValue: (Int) -> Unit,
-    icon: ImageVector
+    icon: ImageVector,
+    action: ImeAction? = null
 ) {
     val context = LocalContext.current
     var value by remember {
@@ -202,7 +205,88 @@ fun SetDataPicker(
                             .plus(" ") + itemDisplay.lowercase()
                     )
                 },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = if (action != null) {
+                        action
+                    } else {
+                        ImeAction.Next
+                    }
+                ),
+            )
+        }
+    }
+}
+
+@Composable
+fun SetRestTimePicker(
+    itemDisplaySeconds: String,
+    itemDisplayMinutes: String,
+    updateSeconds: (Int) -> Unit,
+    updateMinutes: (Int) -> Unit,
+    action: ImeAction? = null
+) {
+
+    val context = LocalContext.current
+    var minutes by remember { mutableIntStateOf(0) }
+    var seconds by remember { mutableIntStateOf(0) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = minutes.takeIf { it != 0 }?.toString() ?: "",
+                onValueChange = { newValue ->
+                    minutes = newValue.toIntOrNull() ?: 0
+                    updateMinutes(minutes)
+                },
+                singleLine = true,
+                label = {
+                    Text(
+                        context.resources.getString(R.string.set_enter_value)
+                            .plus(" ") + itemDisplayMinutes.lowercase()
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = if (action != null) {
+                        action
+                    } else {
+                        ImeAction.Next
+                    }
+                ),
+            )
+            Spacer(Modifier.width(10.dp))
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = seconds.takeIf { it != 0 }?.toString() ?: "",
+                onValueChange = { newValue ->
+                    seconds = newValue.toIntOrNull() ?: 0
+                    updateSeconds(seconds)
+                },
+                singleLine = true,
+                label = {
+                    Text(
+                        context.resources.getString(R.string.set_enter_value)
+                            .plus(" ") + itemDisplaySeconds.lowercase()
+                    )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = if (action != null) {
+                        action
+                    } else {
+                        ImeAction.Next
+                    }
+                ),
             )
         }
     }
