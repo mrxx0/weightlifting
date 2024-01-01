@@ -54,7 +54,6 @@ fun ExerciseDetailsScreen(
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        // TODO : Go to exercise editor screen
                         navController.navigate(route = "SetCreatorScreen/${exerciseId}")
                     },
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -82,8 +81,6 @@ fun ExerciseDetailsScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // TODO : LazyColumn to display exercise
-
                     LazyColumn {
                         if (exercise!!.sets != null) {
                             items(count = exercise!!.sets!!.size) { index ->

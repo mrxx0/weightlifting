@@ -58,7 +58,6 @@ fun SessionDetailsScreen(
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        // TODO : Go to exercise editor screen
                         navController.navigate("ExerciseCreatorScreen/${sessionId}")
 
                     },
@@ -87,7 +86,6 @@ fun SessionDetailsScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // TODO : LazyColumn to display exercise
                     LazyColumn {
                         if (exerciseList != null) {
                             items(count = exerciseList!!.size) { index ->

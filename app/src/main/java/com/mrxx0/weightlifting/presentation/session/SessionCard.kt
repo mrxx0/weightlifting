@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,20 +46,24 @@ fun SessionCard(
         Row(
             Modifier
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(start = 10.dp),
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
+                    .background(MaterialTheme.colorScheme.onPrimary)
                     .padding(16.dp)
                     .align(Alignment.CenterVertically)
+                    .fillMaxSize()
                     .weight(1f),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = session.day.uppercase(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondary
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
             Column(
@@ -66,6 +71,8 @@ fun SessionCard(
                     .padding(16.dp)
                     .align(Alignment.CenterVertically)
                     .weight(2f),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = stringResource(id = R.string.exercise) + ": ${session.exercise?.size ?: 0}",

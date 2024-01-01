@@ -63,7 +63,7 @@ fun ExerciseCreatorScreen(
                         errorText = "Exercise name cannot be empty !"
                     } else {
                         val exercise = ExerciseEntity(
-                            name = exerciseName,
+                            name = exerciseName.lowercase().replaceFirstChar { it.uppercase() },
                             sessionId = sessionId
                         )
                         viewModel.createExercise(exercise)

@@ -55,7 +55,7 @@ fun SessionCreatorScreen(
                         errorText = "Session day cannot be empty !"
                     } else {
                         val session = SessionEntity(
-                            day = sessionDay
+                            day = sessionDay.lowercase().replaceFirstChar { it.uppercase() },
                         )
                         viewModel.createSession(session)
                         navController.popBackStack()

@@ -3,7 +3,7 @@ package com.mrxx0.weightlifting.presentation.exercise
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mrxx0.weightlifting.data.mappers.toExerciseEntity
 import com.mrxx0.weightlifting.domain.Exercises
 import com.mrxx0.weightlifting.presentation.SessionViewModel
 
@@ -47,58 +46,54 @@ fun ExerciseCard(
 
         Row(
             Modifier
-                .background(MaterialTheme.colorScheme.tertiary)
+                .background(MaterialTheme.colorScheme.primary)
                 .fillMaxSize(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.onTertiary)
+                    .background(MaterialTheme.colorScheme.onPrimary)
                     .padding(16.dp)
                     .align(Alignment.CenterVertically)
                     .fillMaxSize()
-                    .weight(1f),
-                horizontalAlignment = Alignment.Start
+                    .weight(1f)
             ) {
                 Text(
                     text = exercise.name!!,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(10.dp)
                 )
-                Text(
-                    text = exercise.toExerciseEntity().id.toString(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    modifier = Modifier.padding(10.dp)
-                )
+            }
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterVertically)
+                    .fillMaxSize()
+                    .weight(2f)
+                    .clickable {
+                        navController.navigate("ExerciseDetailsScreen/${exercise.id}")
+
+                    }
+            ) {
                 if (exercise.sets != null) {
                     val totalSet = sessionViewModel.getSetValueFromExercise(exercise.sets)
                     Text(
                         text = "Sets: " + totalSet,
                         fontStyle = FontStyle.Italic,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        modifier = Modifier.padding(10.dp)
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .align(Alignment.CenterStart)
                     )
                 }
-            }
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.CenterVertically)
-                    .weight(2f)
-                    .clickable {
-                        navController.navigate("ExerciseDetailsScreen/${exercise.id}")
-
-                    },
-                horizontalAlignment = Alignment.End
-            ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = "Next",
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.align(Alignment.CenterEnd)
                 )
             }
         }

@@ -18,5 +18,5 @@ data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String? = null,
     var sets: MutableList<SetEntity>? = null,
-    val sessionId: Int // Foreign key linking to SessionEntity
+    val sessionId: Int
 )

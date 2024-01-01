@@ -18,7 +18,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.Replay
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,7 +39,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,7 +63,7 @@ fun SetCreatorScreen(
     val setViewModel = hiltViewModel<SetViewModel>()
     val sessionViewModel = hiltViewModel<SessionViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
+    val context = LocalContext.current
 
     Scaffold(
         floatingActionButton = {
@@ -98,67 +106,77 @@ fun SetCreatorScreen(
             Column(
                 modifier = Modifier
                     .verticalScroll(scroll)
-                    .fillMaxHeight()
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+
                 ) {
-                    Card(
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(16.dp)
+                ) {
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(16.dp)
+                            .height(IntrinsicSize.Max)
+                            .padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        UniversalPicker(
-                            itemDisplay = "Repetitions",
-                            updateValue = setViewModel::updateRepetitions
-                        )
-                        Spacer(modifier = Modifier.height(20.dp))
-                        UniversalPicker(
-                            itemDisplay = "RestTime",
-                            updateValue = setViewModel::updateRestTime
-                        )
-                        Spacer(modifier = Modifier.height(20.dp))
-                        UniversalPicker(
-                            itemDisplay = "Weight",
-                            updateValue = setViewModel::updateWeight
-                        )
-                        Spacer(modifier = Modifier.height(20.dp))
-                        UniversalPicker(
-                            itemDisplay = "Repeat",
-                            updateValue = setViewModel::updateRepeat
+                        Text(
+                            text = context.resources.getString(R.string.set_data),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
                         )
                     }
+                    SetDataPicker(
+                        itemDisplay = context.resources.getString(R.string.set_repetitions),
+                        updateValue = setViewModel::updateRepetitions,
+                        icon = Icons.Default.Replay
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    SetDataPicker(
+                        itemDisplay = context.resources.getString(R.string.set_rest_time),
+                        updateValue = setViewModel::updateRestTime,
+                        icon = Icons.Default.Timer
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    SetDataPicker(
+                        itemDisplay = context.resources.getString(R.string.set_weight),
+                        updateValue = setViewModel::updateWeight,
+                        icon = Icons.Default.FitnessCenter
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    SetDataPicker(
+                        itemDisplay = context.resources.getString(R.string.set_repeat),
+                        updateValue = setViewModel::updateRepeat,
+                        icon = Icons.Default.Repeat
+                    )
                 }
+
             }
         }
     }
 }
 
 @Composable
-fun UniversalPicker(
+fun SetDataPicker(
     itemDisplay: String,
-//    viewModel: SetViewModel,
-    updateValue: (Int) -> Unit
+    updateValue: (Int) -> Unit,
+    icon: ImageVector
 ) {
+    val context = LocalContext.current
     var value by remember {
         mutableIntStateOf(0)
     }
 
     Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
-        Row(
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(itemDisplay)
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -170,118 +188,22 @@ fun UniversalPicker(
                 onValueChange = { newValue ->
                     value = newValue.toIntOrNull() ?: 0
                     updateValue(value)
-//                    viewModelValue.value = value
-//                    viewModel.repetitions.value = value
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = ""
+                    )
                 },
                 singleLine = true,
-                label = { Text("enter" + itemDisplay) },
+                label = {
+                    Text(
+                        context.resources.getString(R.string.set_enter_value)
+                            .plus(" ") + itemDisplay.lowercase()
+                    )
+                },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             )
         }
-    }
-}
-
-@Composable
-fun RepetitionsPicker(
-    viewModel: SetViewModel
-) {
-    var repetitions by remember {
-        mutableIntStateOf(0)
-    }
-
-    Column(
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text("Repetitions")
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            OutlinedTextField(
-                value = repetitions.takeIf { it != 0 }?.toString() ?: "",
-                onValueChange = { newValue ->
-                    repetitions = newValue.toIntOrNull() ?: 0
-                    viewModel.repetitions.value = repetitions
-                },
-                singleLine = true,
-                label = { Text("enter repetitions") },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            )
-        }
-    }
-}
-
-@Composable
-fun WeightPicker() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max)
-            .padding(10.dp),
-    ) {
-        Text("Weight: ")
-    }
-}
-
-@Composable
-fun RestTimePicker(
-    viewModel: SetViewModel
-) {
-
-    var restTime by remember {
-        mutableIntStateOf(0)
-    }
-
-    Column(
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text("Rest time")
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            OutlinedTextField(
-                value = restTime.takeIf { it != 0 }?.toString() ?: "",
-                onValueChange = { newValue ->
-                    restTime = newValue.toIntOrNull() ?: 0
-                    viewModel.restTime.value = restTime
-                },
-                singleLine = true,
-                label = { Text("enter restTime") },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            )
-        }
-    }
-}
-
-@Composable
-fun RepeatPicker() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max)
-            .padding(10.dp),
-    ) {
-        Text("Repeat: ")
     }
 }

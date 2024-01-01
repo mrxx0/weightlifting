@@ -7,7 +7,13 @@
     <string name="add_exercise">Exercise</string>
     <string name="exercise_name">Name</string>
     <string name="add_set">Set</string>
+    <string name="set_data">Data</string>
     <string name="new_set">New set</string>
+    <string name="set_rest_time">Rest time</string>
+    <string name="set_repetitions">Repetitions</string>
+    <string name="set_weight">Weight</string>
+    <string name="set_repeat">Repeat</string>
+    <string name="set_enter_value">Enter</string>
     <string name="new_exercise">New exercise</string>
     <string name="your_program">Your program</string>
     <string name="day">Day</string>

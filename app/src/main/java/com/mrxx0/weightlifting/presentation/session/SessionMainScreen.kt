@@ -1,5 +1,6 @@
 package com.mrxx0.weightlifting.presentation.session
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -53,7 +55,6 @@ fun SessionMainScreen(
             ExtendedFloatingActionButton(
                 onClick = {
                     navController.navigate(context.resources.getString(R.string.route_session_creator_screen))
-                    // TODO : Navigate to session creator screen
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -70,7 +71,10 @@ fun SessionMainScreen(
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,
-                title = stringResource(id = R.string.your_program)
+                modifier = Modifier.background(Color.Blue),
+                title = stringResource(id = R.string.your_program),
+                onActionClick = null,
+                onNavigationIconClick = null
             )
         }
 
