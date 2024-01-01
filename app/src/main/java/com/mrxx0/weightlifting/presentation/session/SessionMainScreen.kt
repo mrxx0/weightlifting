@@ -41,12 +41,13 @@ fun SessionMainScreen(
     navController: NavController
 ) {
 
-    val viewModel = hiltViewModel<SessionViewModel>()
-    val listSession by viewModel.allSessions.observeAsState()
+    val sessionViewModel = hiltViewModel<SessionViewModel>()
+    val listSession by sessionViewModel.allSessions.observeAsState()
+    val sessionEditMode by sessionViewModel.sessionEditMode.observeAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(true) {
-        viewModel.loadSession()
+    LaunchedEffect(Unit) {
+        sessionViewModel.loadSession()
     }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -54,7 +55,9 @@ fun SessionMainScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    navController.navigate(context.resources.getString(R.string.route_session_creator_screen))
+                    if (sessionEditMode == false) {
+                        navController.navigate(context.resources.getString(R.string.route_session_creator_screen))
+                    }
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -69,12 +72,12 @@ fun SessionMainScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopBar(
+            TopBarSessionMainScreen(
                 scrollBehavior = scrollBehavior,
                 modifier = Modifier.background(Color.Blue),
                 title = stringResource(id = R.string.your_program),
-                onActionClick = null,
-                onNavigationIconClick = null
+                onActionClick = sessionViewModel::deleteSession,
+                onNavigationIconClick = sessionViewModel::stopSessionEditMode
             )
         }
 

@@ -45,6 +45,11 @@ class SessionViewModel @Inject constructor(
     private val _exerciseList = MutableLiveData<List<ExerciseEntity>>()
     val exerciseList: LiveData<List<ExerciseEntity>> get() = _exerciseList
 
+    private val _sessionEditMode = MutableLiveData(false)
+    val sessionEditMode: LiveData<Boolean> get() = _sessionEditMode
+
+    private val _sessionEditId = MutableLiveData<List<Int>>()
+    val sessionEditId: LiveData<List<Int>> get() = _sessionEditId
 
     init {
         loadSession()
@@ -140,6 +145,68 @@ class SessionViewModel @Inject constructor(
             _exerciseList.postValue(
                 repository.getExercisesForSession(sessionId = sessionId)
             )
+        }
+    }
+
+    fun startSessionEditMode(sessionId: Int) {
+        viewModelScope.launch {
+            _sessionEditMode.postValue(true)
+            val test = _sessionEditId.value?.toMutableList() ?: mutableListOf()
+            test.add(sessionId)
+            _sessionEditId.postValue(test)
+        }
+    }
+
+    fun stopSessionEditMode() {
+        viewModelScope.launch {
+            _sessionEditMode.postValue(false)
+            _sessionEditId.postValue(emptyList())
+        }
+    }
+
+    fun addSessionToEdit(sessionId: Int) {
+        viewModelScope.launch {
+            val currentList = _sessionEditId.value?.toMutableList() ?: mutableListOf()
+            currentList.add(sessionId)
+            _sessionEditId.postValue(currentList)
+        }
+    }
+
+    fun removeSessionToEdit(sessionId: Int) {
+        viewModelScope.launch {
+            val currentList = _sessionEditId.value?.toMutableList() ?: mutableListOf()
+            currentList.removeAt(currentList.indexOf(sessionId))
+            _sessionEditId.postValue(currentList)
+        }
+    }
+
+    fun deleteSession() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (_sessionEditMode.value == true) {
+                for (sessionId in _sessionEditId.value!!) {
+                    val sessionToDelete = repository.getSessionById(sessionId)
+                    if (sessionToDelete.exercise != null && sessionToDelete.exercise!!.size > 0) {
+                        val exerciseListToDelete = repository.getExercisesForSession(sessionId)
+                        for (exerciseToDelete in exerciseListToDelete) {
+                            if (exerciseToDelete.sets != null && exerciseToDelete.sets!!.size > 0) {
+                                val setListToDelete = repository.getSetsForExercise(exerciseToDelete.id)
+                                for (setToDelete in setListToDelete) {
+                                    repository.deleteSet(setToDelete)
+                                }
+                            }
+                            repository.deleteExercise(exerciseToDelete)
+                        }
+                    }
+                    repository.deleteSession(sessionToDelete)
+                }
+                _allSessions.postValue(
+                    repository.getAllSessions().map {
+                        it.toSession()
+                    }
+                )
+                _sessionEditId.postValue(emptyList())
+                _sessionEditMode.postValue(false)
+            }
         }
     }
 }
