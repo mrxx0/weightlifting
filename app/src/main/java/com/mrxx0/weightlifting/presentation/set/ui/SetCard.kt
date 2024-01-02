@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.set
+package com.mrxx0.weightlifting.presentation.set.ui
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.background

@@ -1,6 +1,6 @@
 package com.mrxx0.weightlifting.domain
 
-data class Exercises(
+data class Exercise(
     val id: Int? = null,
     val name: String? = null,
     val sessionId: Int,

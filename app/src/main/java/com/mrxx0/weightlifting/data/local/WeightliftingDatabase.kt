@@ -18,5 +18,5 @@ import com.mrxx0.weightlifting.data.local.set.SetEntity
 abstract class WeightliftingDatabase : RoomDatabase() {
     abstract fun sessionDao(): SessionDao
     abstract fun exerciseDao(): ExerciseDao
-    abstract fun setsDao(): SetDao
+    abstract fun setDao(): SetDao
 }

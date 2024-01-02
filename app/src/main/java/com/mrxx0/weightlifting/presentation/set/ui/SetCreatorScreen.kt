@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.set
+package com.mrxx0.weightlifting.presentation.set.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -49,8 +49,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.data.local.set.SetEntity
-import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
+import com.mrxx0.weightlifting.presentation.set.SetViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +61,6 @@ fun SetCreatorScreen(
 ) {
     val scroll = rememberScrollState()
     val setViewModel = hiltViewModel<SetViewModel>()
-    val sessionViewModel = hiltViewModel<SessionViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
 
@@ -76,7 +75,7 @@ fun SetCreatorScreen(
                         restTime = setViewModel.convertTimeToSeconds(),
                         exerciseId = exerciseId
                     )
-                    sessionViewModel.createSet(set)
+                    setViewModel.createSet(set)
                     navController.popBackStack()
 
                 },

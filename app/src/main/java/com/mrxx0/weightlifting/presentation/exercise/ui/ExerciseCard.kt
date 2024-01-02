@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.exercise
+package com.mrxx0.weightlifting.presentation.exercise.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,15 +26,16 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mrxx0.weightlifting.domain.Exercises
-import com.mrxx0.weightlifting.presentation.SessionViewModel
+import com.mrxx0.weightlifting.domain.Exercise
+import com.mrxx0.weightlifting.presentation.set.SetViewModel
 
 @Composable
 fun ExerciseCard(
-    exercise: Exercises,
+    exercise: Exercise,
     navController: NavController
 ) {
-    val sessionViewModel = hiltViewModel<SessionViewModel>()
+    val setViewModel = hiltViewModel<SetViewModel>()
+
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -78,7 +79,7 @@ fun ExerciseCard(
                     }
             ) {
                 val totalSet =
-                    exercise.sets?.let { sessionViewModel.getSetValueFromExercise(it) } ?: 0
+                    exercise.sets?.let { setViewModel.getSetValueFromExercise(it) } ?: 0
                 Text(
                     text = "Sets: " + totalSet,
                     fontStyle = FontStyle.Italic,

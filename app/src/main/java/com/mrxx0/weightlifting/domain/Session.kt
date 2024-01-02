@@ -5,5 +5,5 @@ import java.io.Serializable
 data class Session(
     val id: Int,
     var day: String,
-    var exercise: MutableList<Exercises>? = null
+    var exercise: MutableList<Exercise>? = null
 ) : Serializable

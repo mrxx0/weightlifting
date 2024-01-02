@@ -14,12 +14,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.mrxx0.weightlifting.presentation.exercise.ExerciseCreatorScreen
-import com.mrxx0.weightlifting.presentation.exercise.ExerciseDetailsScreen
-import com.mrxx0.weightlifting.presentation.session.SessionCreatorScreen
-import com.mrxx0.weightlifting.presentation.session.SessionDetailsScreen
-import com.mrxx0.weightlifting.presentation.session.SessionMainScreen
-import com.mrxx0.weightlifting.presentation.set.SetCreatorScreen
+import com.mrxx0.weightlifting.presentation.exercise.ui.ExerciseCreatorScreen
+import com.mrxx0.weightlifting.presentation.exercise.ui.ExerciseDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.ui.SessionCreatorScreen
+import com.mrxx0.weightlifting.presentation.session.ui.SessionDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.ui.SessionMainScreen
+import com.mrxx0.weightlifting.presentation.set.ui.SetCreatorScreen
 import com.mrxx0.weightlifting.ui.theme.WeightliftingTheme
 import dagger.hilt.android.AndroidEntryPoint
 

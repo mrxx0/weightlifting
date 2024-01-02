@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.session
+package com.mrxx0.weightlifting.presentation.session.ui
 
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.height
@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mrxx0.weightlifting.presentation.SessionViewModel
+import com.mrxx0.weightlifting.presentation.session.SessionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

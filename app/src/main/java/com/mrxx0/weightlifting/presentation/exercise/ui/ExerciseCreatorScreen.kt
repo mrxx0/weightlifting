@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.exercise
+package com.mrxx0.weightlifting.presentation.exercise.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -37,8 +37,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.data.local.exercise.ExerciseEntity
-import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
+import com.mrxx0.weightlifting.presentation.exercise.ExerciseViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,7 +50,7 @@ fun ExerciseCreatorScreen(
     val scroll = rememberScrollState()
     var exerciseName by remember { mutableStateOf("") }
     var errorText by remember { mutableStateOf("") }
-    val viewModel = hiltViewModel<SessionViewModel>()
+    val exerciseViewModel = hiltViewModel<ExerciseViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
 
@@ -66,7 +66,7 @@ fun ExerciseCreatorScreen(
                             name = exerciseName.lowercase().replaceFirstChar { it.uppercase() },
                             sessionId = sessionId
                         )
-                        viewModel.createExercise(exercise)
+                        exerciseViewModel.createExercise(exercise)
                         navController.popBackStack()
                     }
                 },

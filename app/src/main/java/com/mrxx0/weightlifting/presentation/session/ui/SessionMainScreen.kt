@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.session
+package com.mrxx0.weightlifting.presentation.session.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
-import com.mrxx0.weightlifting.presentation.SessionViewModel
+import com.mrxx0.weightlifting.presentation.session.SessionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
