@@ -33,7 +33,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.presentation.SessionViewModel
-import com.mrxx0.weightlifting.presentation.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +42,7 @@ fun SessionMainScreen(
 
     val sessionViewModel = hiltViewModel<SessionViewModel>()
     val listSession by sessionViewModel.allSessions.observeAsState()
-    val sessionEditMode by sessionViewModel.sessionEditMode.observeAsState()
+    val sessionEditMode by sessionViewModel.sessionDeleteMode.observeAsState()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -77,7 +76,7 @@ fun SessionMainScreen(
                 modifier = Modifier.background(Color.Blue),
                 title = stringResource(id = R.string.your_program),
                 onActionClick = sessionViewModel::deleteSession,
-                onNavigationIconClick = sessionViewModel::stopSessionEditMode
+                onNavigationIconClick = sessionViewModel::stopSessionDeleteMode
             )
         }
 

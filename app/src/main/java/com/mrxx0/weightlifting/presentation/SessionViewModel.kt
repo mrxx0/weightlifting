@@ -45,11 +45,11 @@ class SessionViewModel @Inject constructor(
     private val _exerciseList = MutableLiveData<List<ExerciseEntity>>()
     val exerciseList: LiveData<List<ExerciseEntity>> get() = _exerciseList
 
-    private val _sessionEditMode = MutableLiveData(false)
-    val sessionEditMode: LiveData<Boolean> get() = _sessionEditMode
+    private val _sessionDeleteMode = MutableLiveData(false)
+    val sessionDeleteMode: LiveData<Boolean> get() = _sessionDeleteMode
 
-    private val _sessionEditId = MutableLiveData<List<Int>>()
-    val sessionEditId: LiveData<List<Int>> get() = _sessionEditId
+    private val _sessionDeleteId = MutableLiveData<List<Int>>()
+    val sessionDeleteId: LiveData<List<Int>> get() = _sessionDeleteId
 
     init {
         loadSession()
@@ -148,48 +148,53 @@ class SessionViewModel @Inject constructor(
         }
     }
 
-    fun startSessionEditMode(sessionId: Int) {
+    fun startSessionDeleteMode(sessionId: Int) {
         viewModelScope.launch {
-            _sessionEditMode.postValue(true)
-            val test = _sessionEditId.value?.toMutableList() ?: mutableListOf()
+            _sessionDeleteMode.postValue(true)
+            val test = _sessionDeleteId.value?.toMutableList() ?: mutableListOf()
             test.add(sessionId)
-            _sessionEditId.postValue(test)
+            _sessionDeleteId.postValue(test)
         }
     }
 
-    fun stopSessionEditMode() {
+    fun stopSessionDeleteMode() {
         viewModelScope.launch {
-            _sessionEditMode.postValue(false)
-            _sessionEditId.postValue(emptyList())
+            _sessionDeleteMode.postValue(false)
+            _sessionDeleteId.value = mutableListOf()
+            _sessionDeleteId.postValue(_sessionDeleteId.value)
         }
     }
 
-    fun addSessionToEdit(sessionId: Int) {
+    fun addSessionToDelete(sessionId: Int) {
         viewModelScope.launch {
-            val currentList = _sessionEditId.value?.toMutableList() ?: mutableListOf()
+            val currentList = _sessionDeleteId.value?.toMutableList() ?: mutableListOf()
             currentList.add(sessionId)
-            _sessionEditId.postValue(currentList)
+            _sessionDeleteId.postValue(currentList)
         }
     }
 
-    fun removeSessionToEdit(sessionId: Int) {
+    fun removeSessionToDelete(sessionId: Int) {
         viewModelScope.launch {
-            val currentList = _sessionEditId.value?.toMutableList() ?: mutableListOf()
+            val currentList = _sessionDeleteId.value?.toMutableList() ?: mutableListOf()
             currentList.removeAt(currentList.indexOf(sessionId))
-            _sessionEditId.postValue(currentList)
+            if (currentList.isEmpty()) {
+                stopSessionDeleteMode()
+            }
+            _sessionDeleteId.postValue(currentList)
         }
     }
 
     fun deleteSession() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (_sessionEditMode.value == true) {
-                for (sessionId in _sessionEditId.value!!) {
+            if (_sessionDeleteMode.value == true) {
+                for (sessionId in _sessionDeleteId.value!!) {
                     val sessionToDelete = repository.getSessionById(sessionId)
                     if (sessionToDelete.exercise != null && sessionToDelete.exercise!!.size > 0) {
                         val exerciseListToDelete = repository.getExercisesForSession(sessionId)
                         for (exerciseToDelete in exerciseListToDelete) {
                             if (exerciseToDelete.sets != null && exerciseToDelete.sets!!.size > 0) {
-                                val setListToDelete = repository.getSetsForExercise(exerciseToDelete.id)
+                                val setListToDelete =
+                                    repository.getSetsForExercise(exerciseToDelete.id)
                                 for (setToDelete in setListToDelete) {
                                     repository.deleteSet(setToDelete)
                                 }
@@ -204,8 +209,8 @@ class SessionViewModel @Inject constructor(
                         it.toSession()
                     }
                 )
-                _sessionEditId.postValue(emptyList())
-                _sessionEditMode.postValue(false)
+                _sessionDeleteId.postValue(emptyList())
+                _sessionDeleteMode.postValue(false)
             }
         }
     }

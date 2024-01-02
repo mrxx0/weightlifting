@@ -1,6 +1,5 @@
 package com.mrxx0.weightlifting.presentation.session
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -26,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -46,8 +44,8 @@ fun SessionCard(
 ) {
     val context = LocalContext.current
     val sessionViewModel = hiltViewModel<SessionViewModel>()
-    val sessionEditMode by sessionViewModel.sessionEditMode.observeAsState()
-    val sessionEditId by sessionViewModel.sessionEditId.observeAsState()
+    val sessionDeleteMode by sessionViewModel.sessionDeleteMode.observeAsState()
+    val sessionDeleteId by sessionViewModel.sessionDeleteId.observeAsState()
 
     Card(
         modifier = Modifier
@@ -57,21 +55,18 @@ fun SessionCard(
             .combinedClickable(
 
                 onClick = {
-                          if (sessionEditMode == true) {
-                              if (sessionEditId?.contains(sessionId) == false) {
-                                  sessionViewModel.addSessionToEdit(sessionId)
-                              } else {
-                                  sessionViewModel.removeSessionToEdit(sessionId)
-                                  if (sessionEditId!!.isEmpty()) {
-                                      sessionViewModel.stopSessionEditMode()
-                                  }
-                              }
-                          }
+                    if (sessionDeleteMode == true) {
+                        if (sessionDeleteId?.contains(sessionId) == false) {
+                            sessionViewModel.addSessionToDelete(sessionId)
+                        } else {
+                            sessionViewModel.removeSessionToDelete(sessionId)
+                        }
+                    }
                 },
 
                 onLongClick = {
-                    if (sessionEditMode == false) {
-                        sessionViewModel.startSessionEditMode(sessionId)
+                    if (sessionDeleteMode == false) {
+                        sessionViewModel.startSessionDeleteMode(sessionId)
                     }
                 }
 
@@ -83,8 +78,8 @@ fun SessionCard(
         Row(
             Modifier
                 .background(
-                    if (sessionEditMode == true && sessionEditId?.contains(sessionId) == true) {
-                        MaterialTheme.colorScheme.tertiary
+                    if (sessionDeleteMode == true && sessionDeleteId?.contains(sessionId) == true) {
+                        MaterialTheme.colorScheme.error
                     } else {
                         MaterialTheme.colorScheme.primary
                     }
@@ -96,12 +91,13 @@ fun SessionCard(
             Column(
                 modifier = Modifier
                     .background(
-                        if (sessionEditMode == true && sessionEditId?.contains(sessionId) == true) {
-                            MaterialTheme.colorScheme.onTertiary
+                        if (sessionDeleteMode == true && sessionDeleteId?.contains(sessionId) == true) {
+                            MaterialTheme.colorScheme.error
                         } else {
-                            MaterialTheme.colorScheme.onPrimary
+                            MaterialTheme.colorScheme.primary
                         }
-                    )                    .padding(16.dp)
+                    )
+                    .padding(16.dp)
                     .align(Alignment.CenterVertically)
                     .fillMaxSize()
                     .weight(1f),
@@ -111,7 +107,7 @@ fun SessionCard(
                 Text(
                     text = session.day.uppercase(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
             Column(
@@ -131,7 +127,7 @@ fun SessionCard(
                 FilledTonalButton(
                     colors = ButtonDefaults.filledTonalButtonColors(),
                     onClick = {
-                        if (sessionEditMode == false) {
+                        if (sessionDeleteMode == false) {
                             navController.navigate("SessionDetailsScreen/${sessionId}")
                         }
                     }

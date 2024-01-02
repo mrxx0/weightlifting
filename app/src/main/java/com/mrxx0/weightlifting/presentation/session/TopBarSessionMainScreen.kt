@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.ModeEdit
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,13 +33,15 @@ fun TopBarSessionMainScreen(
     onActionClick: (() -> Unit?)? = null
 ) {
     val sessionViewModel = hiltViewModel<SessionViewModel>()
-    val sessionEditMode by sessionViewModel.sessionEditMode.observeAsState()
+    val sessionDeleteMode by sessionViewModel.sessionDeleteMode.observeAsState()
     CenterAlignedTopAppBar(
         navigationIcon = {
-            if (sessionEditMode == true) {
-                IconButton(onClick = { if (onNavigationIconClick != null) {
-                    onNavigationIconClick()
-                } }) {
+            if (sessionDeleteMode == true) {
+                IconButton(onClick = {
+                    if (onNavigationIconClick != null) {
+                        onNavigationIconClick()
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.Filled.Cancel,
                         contentDescription = "Localized description"
@@ -50,10 +50,12 @@ fun TopBarSessionMainScreen(
             }
         },
         actions = {
-            if (sessionEditMode == true) {
-                IconButton(onClick = { if (onActionClick != null) {
-                    onActionClick()
-                } }) {
+            if (sessionDeleteMode == true) {
+                IconButton(onClick = {
+                    if (onActionClick != null) {
+                        onActionClick()
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.Filled.DeleteForever,
                         contentDescription = "Localized description"
