@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.session.ui
+package com.mrxx0.weightlifting.presentation.session.ui.mainscreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -25,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -42,7 +41,6 @@ fun SessionCard(
     sessionId: Int,
     navController: NavController
 ) {
-    val context = LocalContext.current
     val sessionViewModel = hiltViewModel<SessionViewModel>()
     val sessionDeleteMode by sessionViewModel.sessionDeleteMode.observeAsState()
     val sessionDeleteId by sessionViewModel.sessionDeleteId.observeAsState()

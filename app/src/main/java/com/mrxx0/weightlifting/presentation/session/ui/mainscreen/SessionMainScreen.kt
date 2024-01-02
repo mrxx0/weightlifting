@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.session.ui
+package com.mrxx0.weightlifting.presentation.session.ui.mainscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

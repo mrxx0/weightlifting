@@ -1,7 +1,9 @@
 package com.mrxx0.weightlifting.presentation.exercise.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -29,6 +31,7 @@ import androidx.navigation.NavController
 import com.mrxx0.weightlifting.domain.Exercise
 import com.mrxx0.weightlifting.presentation.set.SetViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseCard(
     exercise: Exercise,
@@ -40,7 +43,11 @@ fun ExerciseCard(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .height(IntrinsicSize.Max)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = {},
+                onLongClick = {}
+            ),
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {

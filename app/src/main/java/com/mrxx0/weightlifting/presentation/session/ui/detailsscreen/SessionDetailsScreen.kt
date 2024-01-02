@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.session.ui
+package com.mrxx0.weightlifting.presentation.session.ui.detailsscreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.data.mappers.toExercises
-import com.mrxx0.weightlifting.presentation.components.TopBar
 import com.mrxx0.weightlifting.presentation.exercise.ExerciseViewModel
 import com.mrxx0.weightlifting.presentation.exercise.ui.ExerciseCard
 import com.mrxx0.weightlifting.presentation.session.SessionViewModel
@@ -41,14 +40,14 @@ fun SessionDetailsScreen(
     navController: NavController,
     sessionId: Int
 ) {
-    val viewModel = hiltViewModel<SessionViewModel>()
+    val sessionViewModel = hiltViewModel<SessionViewModel>()
     val exerciseViewModel = hiltViewModel<ExerciseViewModel>()
-    val session by viewModel.session.observeAsState()
+    val session by sessionViewModel.session.observeAsState()
     val exerciseList by exerciseViewModel.exerciseList.observeAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = session, key2 = session?.exercise) {
-        viewModel.getSessionById(sessionId = sessionId)
+        sessionViewModel.getSessionById(sessionId = sessionId)
         exerciseViewModel.loadExercises(sessionId = sessionId)
     }
 
@@ -72,7 +71,17 @@ fun SessionDetailsScreen(
                 }
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = { TopBar(title = session?.day!!, scrollBehavior = scrollBehavior) }
+            topBar = {
+                TopBarSessionDetailsScreen(
+                    title = session?.day!!,
+                    scrollBehavior = scrollBehavior,
+                    onActionClick = {
+                        navController.navigate(
+                            "SessionEditTitle/${sessionId}"
+                        )
+                    }
+                )
+            }
 
         ) { contentPadding ->
             Box(

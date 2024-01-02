@@ -144,4 +144,10 @@ class SessionViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateSession(session: SessionEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            sessionRepository.updateSession(session)
+        }
+    }
 }

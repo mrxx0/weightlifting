@@ -16,9 +16,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mrxx0.weightlifting.presentation.exercise.ui.ExerciseCreatorScreen
 import com.mrxx0.weightlifting.presentation.exercise.ui.ExerciseDetailsScreen
-import com.mrxx0.weightlifting.presentation.session.ui.SessionCreatorScreen
-import com.mrxx0.weightlifting.presentation.session.ui.SessionDetailsScreen
-import com.mrxx0.weightlifting.presentation.session.ui.SessionMainScreen
+import com.mrxx0.weightlifting.presentation.session.ui.creatorscreen.SessionCreatorScreen
+import com.mrxx0.weightlifting.presentation.session.ui.detailsscreen.SessionDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.ui.edittitlescreen.SessionEditTitle
+import com.mrxx0.weightlifting.presentation.session.ui.mainscreen.SessionMainScreen
 import com.mrxx0.weightlifting.presentation.set.ui.SetCreatorScreen
 import com.mrxx0.weightlifting.ui.theme.WeightliftingTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +55,17 @@ class MainActivity : ComponentActivity() {
                         ) {
                             it.arguments?.getInt("sessionId")?.let { it1 ->
                                 SessionDetailsScreen(
+                                    navController = navController,
+                                    it1
+                                )
+                            }
+                        }
+                        composable(
+                            "SessionEditTitle/{sessionId}",
+                            arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
+                        ) {
+                            it.arguments?.getInt("sessionId")?.let { it1 ->
+                                SessionEditTitle(
                                     navController = navController,
                                     it1
                                 )

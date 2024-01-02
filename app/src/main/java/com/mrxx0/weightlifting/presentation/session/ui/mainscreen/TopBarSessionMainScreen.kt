@@ -1,11 +1,11 @@
-package com.mrxx0.weightlifting.presentation.session.ui
+package com.mrxx0.weightlifting.presentation.session.ui.mainscreen
 
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,7 +44,8 @@ fun TopBarSessionMainScreen(
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Cancel,
-                        contentDescription = "Localized description"
+                        contentDescription = "Localized description",
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -57,8 +58,9 @@ fun TopBarSessionMainScreen(
                     }
                 }) {
                     Icon(
-                        imageVector = Icons.Filled.DeleteForever,
-                        contentDescription = "Localized description"
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Localized description",
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
