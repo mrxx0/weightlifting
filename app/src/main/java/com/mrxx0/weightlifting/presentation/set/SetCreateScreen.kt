@@ -55,7 +55,7 @@ import com.mrxx0.weightlifting.presentation.components.TopBar
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SetCreatorScreen(
+fun SetCreateScreen(
     navController: NavController,
     exerciseId: Int
 ) {

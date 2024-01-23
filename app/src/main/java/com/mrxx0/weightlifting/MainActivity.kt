@@ -14,12 +14,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.mrxx0.weightlifting.presentation.exercise.ExerciseCreatorScreen
-import com.mrxx0.weightlifting.presentation.exercise.ExerciseDetailsScreen
-import com.mrxx0.weightlifting.presentation.session.SessionCreatorScreen
-import com.mrxx0.weightlifting.presentation.session.SessionDetailsScreen
-import com.mrxx0.weightlifting.presentation.session.SessionMainScreen
-import com.mrxx0.weightlifting.presentation.set.SetCreatorScreen
+import com.mrxx0.weightlifting.presentation.exercise.create.ExerciseCreateScreen
+import com.mrxx0.weightlifting.presentation.exercise.details.ExerciseDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.create.SessionCreateScreen
+import com.mrxx0.weightlifting.presentation.session.detailsscreen.SessionDetailsScreen
+import com.mrxx0.weightlifting.presentation.session.mainscreen.SessionMainScreen
+import com.mrxx0.weightlifting.presentation.set.SetCreateScreen
 import com.mrxx0.weightlifting.ui.theme.WeightliftingTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                             SessionMainScreen(navController = navController)
                         }
                         composable(context.resources.getString(R.string.route_session_creator_screen)) {
-                            SessionCreatorScreen(navController = navController)
+                            SessionCreateScreen(navController = navController)
                         }
                         composable(
                             "SessionDetailsScreen/{sessionId}",
@@ -71,22 +71,22 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         composable(
-                            "ExerciseCreatorScreen/{sessionId}",
+                            "ExerciseCreateScreen/{sessionId}",
                             arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
                         ) {
                             it.arguments?.getInt("sessionId")?.let { it1 ->
-                                ExerciseCreatorScreen(
+                                ExerciseCreateScreen(
                                     navController = navController,
                                     it1
                                 )
                             }
                         }
                         composable(
-                            "SetCreatorScreen/{exerciseId}",
+                            "SetCreateScreen/{exerciseId}",
                             arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
                         ) {
                             it.arguments?.getInt("exerciseId")?.let { it1 ->
-                                SetCreatorScreen(
+                                SetCreateScreen(
                                     navController = navController,
                                     it1
                                 )

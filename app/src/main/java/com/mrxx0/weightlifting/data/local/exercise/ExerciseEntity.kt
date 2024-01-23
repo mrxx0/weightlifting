@@ -15,7 +15,8 @@ import com.mrxx0.weightlifting.data.local.set.SetEntity
     )]
 )
 data class ExerciseEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val name: String? = null,
     var sets: MutableList<SetEntity>? = null,
     val sessionId: Int

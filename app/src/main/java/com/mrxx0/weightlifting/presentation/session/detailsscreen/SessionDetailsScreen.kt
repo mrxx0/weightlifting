@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.exercise
+package com.mrxx0.weightlifting.presentation.session.detailsscreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,44 +29,46 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
-import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
-import com.mrxx0.weightlifting.presentation.set.SetCard
+import com.mrxx0.weightlifting.presentation.exercise.card.ExerciseCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseDetailsScreen(
+fun SessionDetailsScreen(
     navController: NavController,
-    exerciseId: Int
+    sessionId: Int
 ) {
+    val viewModel = hiltViewModel<SessionDetailsViewModel>()
 
+    val session by viewModel.sharedSession.observeAsState()
+    val exerciseList by viewModel.exerciseList.observeAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val viewModel = hiltViewModel<SessionViewModel>()
-    val exercise by viewModel.exercise.observeAsState()
 
-    LaunchedEffect(true) {
-        viewModel.getExerciseById(exerciseId = exerciseId)
+    LaunchedEffect(key1 = session, key2 = session?.exercise) {
+        viewModel.getSessionById(sessionId = sessionId)
+        viewModel.loadExerciseList(sessionId)
     }
-    if (exercise != null) {
+
+    if (session != null) {
         Scaffold(
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        navController.navigate(route = "SetCreatorScreen/${exerciseId}")
+                        navController.navigate("ExerciseCreateScreen/${sessionId}")
                     },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_set)
+                        contentDescription = stringResource(id = R.string.add_exercise)
                     )
                     Spacer(modifier = Modifier.width(width = 8.dp))
-                    Text(text = stringResource(id = R.string.add_set))
+                    Text(text = stringResource(id = R.string.add_exercise))
                 }
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = { TopBar(scrollBehavior = scrollBehavior, title = exercise!!.name!!) }
+            topBar = { TopBar(title = session?.day!!, scrollBehavior = scrollBehavior) }
 
         ) { contentPadding ->
             Box(
@@ -80,24 +82,18 @@ fun ExerciseDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     LazyColumn {
-                        if (exercise!!.sets != null) {
-                            items(count = exercise!!.sets!!.size) { index ->
-                                val set = exercise!!.sets!![index]
-                                if (set.repeat > 0) {
-                                    for (i in 0 until set.repeat) {
-                                        SetCard(set)
-                                    }
-                                } else {
-                                    SetCard(set)
-                                }
-                            }
-                        } else {
-                            item {
-                                Text("Looks like there are no set here ! Add one !")
+                        exerciseList?.let {
+                            items(count = it.size) { index ->
+                                val exercise = it[index]
+                                ExerciseCard(
+                                    exercise = exercise,
+                                    navController = navController
+                                )
                             }
                         }
                         item { Spacer(modifier = Modifier.padding(50.dp)) }
                     }
+
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.session
+package com.mrxx0.weightlifting.presentation.session.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
-import com.mrxx0.weightlifting.domain.Session
+import com.mrxx0.weightlifting.domain.model.Session
 
 @Composable
 fun SessionCard(

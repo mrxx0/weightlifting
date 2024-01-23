@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.domain
+package com.mrxx0.weightlifting.domain.model
 
 data class Set(
     val id: Int,

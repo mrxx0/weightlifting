@@ -3,28 +3,28 @@ package com.mrxx0.weightlifting.data.mappers
 import com.mrxx0.weightlifting.data.local.exercise.ExerciseEntity
 import com.mrxx0.weightlifting.data.local.session.SessionEntity
 import com.mrxx0.weightlifting.data.local.set.SetEntity
-import com.mrxx0.weightlifting.domain.Exercises
-import com.mrxx0.weightlifting.domain.Session
-import com.mrxx0.weightlifting.domain.Set
+import com.mrxx0.weightlifting.domain.model.Exercise
+import com.mrxx0.weightlifting.domain.model.Session
+import com.mrxx0.weightlifting.domain.model.Set
 
 fun SessionEntity.toSession(): Session {
     return Session(
         id = this.id,
         day = this.day,
-        exercise = this.exercise?.map { it.toExercises() } as MutableList<Exercises>?
+        exercise = this.exercise?.map { it.toExercise() } as MutableList<Exercise>?
     )
 }
 
-fun ExerciseEntity.toExercises(): Exercises {
-    return Exercises(
+fun ExerciseEntity.toExercise(): Exercise {
+    return Exercise(
         id = this.id,
         name = this.name,
         sessionId = this.sessionId,
-        sets = this.sets?.map { it.toSets() }
+        sets = this.sets?.map { it.toSet() }
     )
 }
 
-fun SetEntity.toSets(): Set {
+fun SetEntity.toSet(): Set {
     return Set(
         id = this.id,
         repetitions = this.repetitions,
@@ -43,9 +43,9 @@ fun Session.toSessionEntity(): SessionEntity {
     )
 }
 
-fun Exercises.toExerciseEntity(): ExerciseEntity {
+fun Exercise.toExerciseEntity(): ExerciseEntity {
     return ExerciseEntity(
-        id = this.id ?: 0,
+        id = this.id ?: 66,
         name = this.name,
         sessionId = this.sessionId,
         sets = this.sets?.map { it.toSetEntity() }?.toMutableList()
