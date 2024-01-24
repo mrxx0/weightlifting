@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mrxx0.weightlifting.data.local.Repository
-import com.mrxx0.weightlifting.data.local.WeightliftingDatabase
-import com.mrxx0.weightlifting.data.mappers.toExercise
-import com.mrxx0.weightlifting.data.mappers.toSession
 import com.mrxx0.weightlifting.domain.model.Exercise
+import com.mrxx0.weightlifting.domain.repository.ExerciseRepository
+import com.mrxx0.weightlifting.domain.repository.SessionRepository
 import com.mrxx0.weightlifting.presentation.shared.SharedDataViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -18,25 +16,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SessionDetailsViewModel @Inject constructor(
-    weightliftingDatabase: WeightliftingDatabase,
+    private val sessionRepository: SessionRepository,
+    private val exerciseRepository: ExerciseRepository,
     private val sharedData: SharedDataViewModel
 ) : ViewModel() {
 
-    private val repository = Repository(
-        weightliftingDatabase.sessionDao(),
-        weightliftingDatabase.exerciseDao(),
-        weightliftingDatabase.setsDao()
-    )
-
     private val _exerciseList = MutableLiveData<List<Exercise>>()
     val exerciseList: LiveData<List<Exercise>> get() = _exerciseList
-
     val sharedSession = sharedData.session
 
     fun getSessionById(sessionId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val newSession = repository.getSessionById(sessionId).toSession()
+                val newSession = sessionRepository.getSessionById(sessionId)
                 _exerciseList.postValue(
                     newSession.exercise
                 )
@@ -50,9 +42,7 @@ class SessionDetailsViewModel @Inject constructor(
 
     fun loadExerciseList(sessionId: Int) {
         viewModelScope.launch {
-            _exerciseList.postValue(repository.getExercisesForSession(sessionId).map {
-                it.toExercise()
-            })
+            _exerciseList.postValue(exerciseRepository.getExercisesForSession(sessionId))
         }
     }
 

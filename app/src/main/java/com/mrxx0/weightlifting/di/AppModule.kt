@@ -3,6 +3,12 @@ package com.mrxx0.weightlifting.di
 import android.content.Context
 import androidx.room.Room
 import com.mrxx0.weightlifting.data.local.WeightliftingDatabase
+import com.mrxx0.weightlifting.data.repository.ExerciseRepositoryImpl
+import com.mrxx0.weightlifting.data.repository.SessionRepositoryImpl
+import com.mrxx0.weightlifting.data.repository.SetRepositoryImpl
+import com.mrxx0.weightlifting.domain.repository.ExerciseRepository
+import com.mrxx0.weightlifting.domain.repository.SessionRepository
+import com.mrxx0.weightlifting.domain.repository.SetRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +19,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     @Singleton
     fun provideWeightliftingDatabase(@ApplicationContext context: Context): WeightliftingDatabase {
@@ -22,5 +27,23 @@ object AppModule {
             WeightliftingDatabase::class.java,
             "sessions.db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSessionRepository(weightliftingDatabase: WeightliftingDatabase): SessionRepository {
+        return SessionRepositoryImpl(weightliftingDatabase.sessionDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideExerciseRepository(weightliftingDatabase: WeightliftingDatabase): ExerciseRepository {
+        return ExerciseRepositoryImpl(weightliftingDatabase.exerciseDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetRepository(weightliftingDatabase: WeightliftingDatabase): SetRepository {
+        return SetRepositoryImpl(weightliftingDatabase.setsDao())
     }
 }

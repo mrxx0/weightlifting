@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.set
+package com.mrxx0.weightlifting.presentation.set.create
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -48,8 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
-import com.mrxx0.weightlifting.data.local.set.SetEntity
-import com.mrxx0.weightlifting.presentation.SessionViewModel
 import com.mrxx0.weightlifting.presentation.components.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -60,8 +58,7 @@ fun SetCreateScreen(
     exerciseId: Int
 ) {
     val scroll = rememberScrollState()
-    val setViewModel = hiltViewModel<SetViewModel>()
-    val sessionViewModel = hiltViewModel<SessionViewModel>()
+    val setViewModel = hiltViewModel<SetCreateViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
 
@@ -69,16 +66,14 @@ fun SetCreateScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    val set = SetEntity(
-                        repetitions = setViewModel.repetitions.value,
-                        repeat = setViewModel.repeat.value,
-                        weight = setViewModel.weight.value,
-                        restTime = setViewModel.convertTimeToSeconds(),
-                        exerciseId = exerciseId
+                    setViewModel.createSet(
+                        setViewModel.repetitions.value,
+                        setViewModel.repeat.value,
+                        setViewModel.weight.value,
+                        setViewModel.convertTimeToSeconds(),
+                        exerciseId
                     )
-                    sessionViewModel.createSet(set)
                     navController.popBackStack()
-
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer

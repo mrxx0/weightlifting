@@ -19,7 +19,7 @@ import com.mrxx0.weightlifting.presentation.exercise.details.ExerciseDetailsScre
 import com.mrxx0.weightlifting.presentation.session.create.SessionCreateScreen
 import com.mrxx0.weightlifting.presentation.session.detailsscreen.SessionDetailsScreen
 import com.mrxx0.weightlifting.presentation.session.mainscreen.SessionMainScreen
-import com.mrxx0.weightlifting.presentation.set.SetCreateScreen
+import com.mrxx0.weightlifting.presentation.set.create.SetCreateScreen
 import com.mrxx0.weightlifting.ui.theme.WeightliftingTheme
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.domain.model.Exercise
-import com.mrxx0.weightlifting.presentation.SessionViewModel
+import com.mrxx0.weightlifting.presentation.exercise.details.ExerciseDetailsViewModel
 
 @Composable
 fun ExerciseCard(
     exercise: Exercise,
     navController: NavController
 ) {
-    val sessionViewModel = hiltViewModel<SessionViewModel>()
+    val viewModel = hiltViewModel<ExerciseDetailsViewModel>()
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -79,7 +79,7 @@ fun ExerciseCard(
                     }
             ) {
                 val totalSet =
-                    exercise.sets?.let { sessionViewModel.getSetValueFromExercise(it) } ?: 0
+                    exercise.sets?.let { viewModel.getSetValueFromExercise(it) } ?: 0
                 Text(
                     text = "Sets: $totalSet",
                     fontStyle = FontStyle.Italic,
