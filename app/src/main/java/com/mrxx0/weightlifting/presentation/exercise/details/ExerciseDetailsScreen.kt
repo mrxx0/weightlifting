@@ -80,9 +80,9 @@ fun ExerciseDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     LazyColumn {
-                        if (exercise!!.sets != null) {
-                            items(count = exercise!!.sets!!.size) { index ->
-                                val set = exercise!!.sets!![index]
+                        if (exercise!!.set != null) {
+                            items(count = exercise!!.set!!.size) { index ->
+                                val set = exercise!!.set!![index]
                                 if (set.repeat > 0) {
                                     for (i in 0 until set.repeat) {
                                         SetCard(set)

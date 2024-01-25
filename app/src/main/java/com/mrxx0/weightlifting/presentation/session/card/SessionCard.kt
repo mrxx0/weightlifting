@@ -61,7 +61,7 @@ fun SessionCard(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = session.day.uppercase(),
+                    text = session.name.uppercase(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )

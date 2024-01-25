@@ -18,9 +18,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
+import com.mrxx0.weightlifting.presentation.components.IntValueFieldComponent
 import com.mrxx0.weightlifting.presentation.components.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -61,19 +59,19 @@ fun SetCreateScreen(
     val setViewModel = hiltViewModel<SetCreateViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
+    val allValuesChecked = setViewModel.allValidationsPassed.value
 
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    setViewModel.createSet(
-                        setViewModel.repetitions.value,
-                        setViewModel.repeat.value,
-                        setViewModel.weight.value,
-                        setViewModel.convertTimeToSeconds(),
-                        exerciseId
-                    )
-                    navController.popBackStack()
+
+                    if (allValuesChecked) {
+                        setViewModel.onEvent(SetCreateUiEvent.SetCreateClicked)
+                        if (setViewModel.setCreateUiState.value.setSaved) {
+                            navController.popBackStack()
+                        }
+                    }
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -112,7 +110,7 @@ fun SetCreateScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .padding(16.dp)
+                        .padding(20.dp)
                 ) {
                     Row(
                         modifier = Modifier
@@ -127,29 +125,81 @@ fun SetCreateScreen(
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    SetDataPicker(
-                        itemDisplay = context.resources.getString(R.string.set_repetitions),
-                        updateValue = setViewModel::updateRepetitions,
-                        icon = Icons.Default.Replay
+
+                    IntValueFieldComponent(
+                        labelValue = stringResource(id = R.string.set_repetitions),
+                        onIntChanged = {
+                            setViewModel.onEvent(
+                                SetCreateUiEvent.RepetitionsChanged(
+                                    it,
+                                    exerciseId
+                                )
+                            )
+                        },
+                        errorStatus = setViewModel.setCreateUiState.value.repetitionsError,
+                        errorMessage = stringResource(id = R.string.set_repetitions_error)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    SetRestTimePicker(
-                        itemDisplayMinutes = context.resources.getString(R.string.set_time_minutes),
-                        itemDisplaySeconds = context.resources.getString(R.string.set_time_seconds),
-                        updateSeconds = setViewModel::updateRestTimeSeconds,
-                        updateMinutes = setViewModel::updateRestTimeMinutes,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            IntValueFieldComponent(
+                                labelValue = stringResource(id = R.string.set_time_minutes),
+                                onIntChanged = {
+                                    setViewModel.onEvent(
+                                        SetCreateUiEvent.RestTimeMinutesChanged(
+                                            it
+                                        )
+                                    )
+                                },
+                                errorStatus = setViewModel.setCreateUiState.value.restTimeMinutesError,
+                                errorMessage = stringResource(id = R.string.set_rest_time_minutes_error)
+                            )
+                        }
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            IntValueFieldComponent(
+                                labelValue = stringResource(id = R.string.set_time_seconds),
+                                onIntChanged = {
+                                    setViewModel.onEvent(
+                                        SetCreateUiEvent.RestTimeSecondsChanged(
+                                            it
+                                        )
+                                    )
+                                },
+                                errorStatus = setViewModel.setCreateUiState.value.restTimeSecondsError,
+                                errorMessage = stringResource(id = R.string.set_rest_time_seconds_error)
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(20.dp))
-                    SetDataPicker(
-                        itemDisplay = context.resources.getString(R.string.set_weight),
-                        updateValue = setViewModel::updateWeight,
-                        icon = Icons.Default.FitnessCenter
+                    IntValueFieldComponent(
+                        labelValue = stringResource(id = R.string.set_weight),
+                        onIntChanged = {
+                            setViewModel.onEvent(
+                                SetCreateUiEvent.WeightChanged(
+                                    it
+                                )
+                            )
+                        },
+                        errorStatus = setViewModel.setCreateUiState.value.weightError,
+                        errorMessage = stringResource(id = R.string.set_weight_error)
                     )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    SetDataPicker(
-                        itemDisplay = context.resources.getString(R.string.set_repeat),
-                        updateValue = setViewModel::updateRepeat,
-                        icon = Icons.Default.Repeat,
+                    IntValueFieldComponent(
+                        labelValue = stringResource(id = R.string.set_repeat),
+                        onIntChanged = {
+                            setViewModel.onEvent(
+                                SetCreateUiEvent.RepeatChanged(
+                                    it
+                                )
+                            )
+                        },
+                        errorStatus = setViewModel.setCreateUiState.value.repeatError,
+                        errorMessage = stringResource(id = R.string.set_repeat_error),
                         action = ImeAction.Done
                     )
                 }

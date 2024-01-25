@@ -1,9 +1,9 @@
 package com.mrxx0.weightlifting.presentation.set.create
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mrxx0.weightlifting.data.rules.Validator
 import com.mrxx0.weightlifting.domain.model.Set
 import com.mrxx0.weightlifting.domain.usecase.CreateSetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,47 +16,89 @@ class SetCreateViewModel @Inject constructor(
     private val createSetUseCase: CreateSetUseCase,
 ) : ViewModel() {
 
-    val restTimeMinutes: MutableState<Int> = mutableIntStateOf(0)
-    val restTimeSeconds: MutableState<Int> = mutableIntStateOf(0)
-    val repetitions: MutableState<Int> = mutableIntStateOf(0)
-    val weight: MutableState<Int> = mutableIntStateOf(0)
-    val repeat: MutableState<Int> = mutableIntStateOf(0)
+    val setCreateUiState = mutableStateOf(SetCreateUiState())
+    val allValidationsPassed = mutableStateOf(false)
 
-    fun updateRestTimeMinutes(newRestTimeMinutes: Int) {
-        restTimeMinutes.value = newRestTimeMinutes
+    fun onEvent(event: SetCreateUiEvent) {
+        when (event) {
+            is SetCreateUiEvent.RepetitionsChanged -> {
+                setCreateUiState.value = setCreateUiState.value.copy(
+                    repetitions = event.repetitions,
+                    exerciseId = event.exerciseId
+                )
+            }
+
+            is SetCreateUiEvent.RepeatChanged -> {
+                setCreateUiState.value = setCreateUiState.value.copy(
+                    repeat = event.repeat
+                )
+            }
+
+            is SetCreateUiEvent.RestTimeMinutesChanged -> {
+                setCreateUiState.value = setCreateUiState.value.copy(
+                    restTime = event.minutes
+                )
+            }
+
+            is SetCreateUiEvent.RestTimeSecondsChanged -> {
+                setCreateUiState.value = setCreateUiState.value.copy(
+                    restTime = event.seconds
+                )
+            }
+
+            is SetCreateUiEvent.WeightChanged -> {
+                setCreateUiState.value = setCreateUiState.value.copy(
+                    weight = event.weight
+                )
+            }
+
+            is SetCreateUiEvent.SetCreateClicked -> {
+                validateSetCreateDataWithRules()
+                if (allValidationsPassed.value) {
+                    createSet()
+                }
+            }
+
+        }
+        validateSetCreateDataWithRules()
     }
 
-    fun convertTimeToSeconds(): Int {
-        return ((restTimeMinutes.value * 60) + restTimeSeconds.value)
+    private fun validateSetCreateDataWithRules() {
+        val repetitionsResult = Validator.validateIntFieldSubEqualZero(
+            value = setCreateUiState.value.repetitions
+        )
+        val weightResult = Validator.validateIntFieldSubEqualZero(
+            value = setCreateUiState.value.weight
+        )
+        val secondResult = Validator.validateIntFieldSubEqualZero(
+            value = setCreateUiState.value.restTimeSeconds
+        )
+        val minuteResult = Validator.validateIntFieldSubEqualZero(
+            value = setCreateUiState.value.restTimeMinutes
+        )
+        val repeatResult = Validator.validateIntFieldSubZero(
+            value = setCreateUiState.value.repeat
+        )
+        allValidationsPassed.value =
+            repetitionsResult.status &&
+                    weightResult.status &&
+                    repeatResult.status
     }
 
-    fun updateRestTimeSeconds(newRestTimeSeconds: Int) {
-        restTimeSeconds.value = newRestTimeSeconds
-    }
-
-    fun updateRepetitions(newRepetitions: Int) {
-        repetitions.value = newRepetitions
-    }
-
-    fun updateWeight(newWeight: Int) {
-        weight.value = newWeight
-    }
-
-    fun updateRepeat(newRepeat: Int) {
-        repeat.value = newRepeat
-    }
-
-    fun createSet(repetitions: Int, repeat: Int, weight: Int, restTime: Int, exerciseId: Int) {
+    private fun createSet() {
         val newSet = Set(
-            repetitions = repetitions,
-            repeat = repeat,
-            weight = weight,
-            restTime = restTime,
-            exerciseId = exerciseId
+            repetitions = setCreateUiState.value.repetitions,
+            repeat = setCreateUiState.value.repeat,
+            weight = setCreateUiState.value.weight,
+            restTime = setCreateUiState.value.restTime,
+            exerciseId = setCreateUiState.value.exerciseId
         )
         viewModelScope.launch(Dispatchers.IO) {
             createSetUseCase(newSet)
         }
+        setCreateUiState.value = setCreateUiState.value.copy(
+            setSaved = true
+        )
     }
 
 }

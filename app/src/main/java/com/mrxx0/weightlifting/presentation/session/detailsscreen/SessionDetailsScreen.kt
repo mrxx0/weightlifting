@@ -68,7 +68,7 @@ fun SessionDetailsScreen(
                 }
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = { TopBar(title = session?.day!!, scrollBehavior = scrollBehavior) }
+            topBar = { TopBar(title = session?.name!!, scrollBehavior = scrollBehavior) }
 
         ) { contentPadding ->
             Box(

@@ -19,23 +19,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
+import com.mrxx0.weightlifting.presentation.components.TextFieldComponent
 import com.mrxx0.weightlifting.presentation.components.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -46,25 +41,19 @@ fun ExerciseCreateScreen(
     sessionId: Int
 ) {
     val scroll = rememberScrollState()
-    var exerciseName by remember { mutableStateOf("") }
-    var errorText by remember { mutableStateOf("") }
     val viewModel = hiltViewModel<ExerciseCreateViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val context = LocalContext.current
-
+    val nameError = viewModel.exerciseCreateUiState.value.nameError
 
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    if (exerciseName.isBlank()) {
-                        errorText = "Exercise name cannot be empty !"
-                    } else {
-                        viewModel.createExercise(
-                            name = exerciseName.lowercase().replaceFirstChar { it.uppercase() },
-                            sessionId = sessionId
-                        )
-                        navController.popBackStack()
+                    if (!nameError) {
+                        viewModel.onEvent(ExerciseCreateUiEvent.ExerciseCreateClicked)
+                        if (viewModel.exerciseCreateUiState.value.exerciseSaved) {
+                            navController.popBackStack()
+                        }
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -105,7 +94,7 @@ fun ExerciseCreateScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        Text(context.resources.getString(R.string.exercise_name))
+                        Text(text = stringResource(id = R.string.exercise_name))
                     }
                     Row(
                         modifier = Modifier
@@ -113,16 +102,13 @@ fun ExerciseCreateScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        OutlinedTextField(
-                            value = exerciseName,
-                            onValueChange = { exerciseName = it },
-                            label = { Text(stringResource(id = R.string.exercise)) },
-                            singleLine = true,
-                            isError = errorText.isNotEmpty()
-                        )
-                        Text(
-                            text = errorText,
-                            color = MaterialTheme.colorScheme.error
+                        TextFieldComponent(
+                            labelValue = stringResource(id = R.string.name),
+                            onTextChanged = {
+                                viewModel.onEvent(ExerciseCreateUiEvent.NameChanged(it, sessionId))
+                            },
+                            errorStatus = viewModel.exerciseCreateUiState.value.nameError,
+                            errorMessage = stringResource(id = R.string.create_exercise_error_message)
                         )
                     }
                 }

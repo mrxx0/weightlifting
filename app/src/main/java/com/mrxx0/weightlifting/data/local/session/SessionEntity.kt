@@ -8,7 +8,7 @@ import com.mrxx0.weightlifting.data.local.exercise.ExerciseEntity
 data class SessionEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val day: String,
+    val name: String,
     var exercise: MutableList<ExerciseEntity>? = null
 )
 

@@ -79,7 +79,7 @@ fun ExerciseCard(
                     }
             ) {
                 val totalSet =
-                    exercise.sets?.let { viewModel.getSetValueFromExercise(it) } ?: 0
+                    exercise.set?.let { viewModel.getSetValueFromExercise(it) } ?: 0
                 Text(
                     text = "Sets: $totalSet",
                     fontStyle = FontStyle.Italic,

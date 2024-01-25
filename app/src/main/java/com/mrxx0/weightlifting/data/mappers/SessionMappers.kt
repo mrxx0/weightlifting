@@ -10,7 +10,7 @@ import com.mrxx0.weightlifting.domain.model.Set
 fun SessionEntity.toSession(): Session {
     return Session(
         id = this.id,
-        day = this.day,
+        name = this.name,
         exercise = this.exercise?.map { it.toExercise() } as MutableList<Exercise>?
     )
 }
@@ -20,7 +20,7 @@ fun ExerciseEntity.toExercise(): Exercise {
         id = this.id,
         name = this.name,
         sessionId = this.sessionId,
-        sets = this.sets?.map { it.toSet() }
+        set = this.set?.map { it.toSet() }
     )
 }
 
@@ -38,7 +38,7 @@ fun SetEntity.toSet(): Set {
 fun Session.toSessionEntity(): SessionEntity {
     return SessionEntity(
         id = this.id,
-        day = this.day,
+        name = this.name,
         exercise = this.exercise?.map { it.toExerciseEntity() }?.toMutableList()
     )
 }
@@ -48,7 +48,7 @@ fun Exercise.toExerciseEntity(): ExerciseEntity {
         id = this.id ?: 66,
         name = this.name,
         sessionId = this.sessionId,
-        sets = this.sets?.map { it.toSetEntity() }?.toMutableList()
+        set = this.set?.map { it.toSetEntity() }?.toMutableList()
     )
 }
 

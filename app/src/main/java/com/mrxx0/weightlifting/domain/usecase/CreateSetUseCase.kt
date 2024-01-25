@@ -18,10 +18,10 @@ class CreateSetUseCase @Inject constructor(
         setRepository.insertSet(set)
         val updateExercise = exerciseRepository.getExerciseById(set.exerciseId).toExerciseEntity()
         updateExercise.let {
-            if (it.sets.isNullOrEmpty()) {
-                it.sets = mutableListOf(set.toSetEntity())
+            if (it.set.isNullOrEmpty()) {
+                it.set = mutableListOf(set.toSetEntity())
             } else {
-                it.sets!!.add(set.toSetEntity())
+                it.set!!.add(set.toSetEntity())
             }
             exerciseRepository.updateExercise(updateExercise.toExercise())
             sharedDataViewModel.updateExercise(updateExercise.toExercise())

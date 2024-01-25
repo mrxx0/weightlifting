@@ -18,6 +18,6 @@ data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String? = null,
-    var sets: MutableList<SetEntity>? = null,
+    var set: MutableList<SetEntity>? = null,
     val sessionId: Int
 )
