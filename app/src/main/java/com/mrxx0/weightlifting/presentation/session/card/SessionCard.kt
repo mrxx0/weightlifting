@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.domain.model.Session
+import com.mrxx0.weightlifting.presentation.navigation.graph.HistoryScreen
 
 @Composable
 fun SessionCard(
@@ -83,7 +84,8 @@ fun SessionCard(
                 FilledTonalButton(
                     colors = ButtonDefaults.filledTonalButtonColors(),
                     onClick = {
-                        navController.navigate("SessionDetailsScreen/${sessionId}")
+                        navController.navigate(HistoryScreen.Details.createRoute(sessionId.toString()))
+//                        navController.navigate("HISTORYDETAILS/${sessionId}")
                     }
                 ) {
                     Text(

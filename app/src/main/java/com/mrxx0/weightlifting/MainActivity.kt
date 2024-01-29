@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mrxx0.weightlifting.presentation.exercise.create.ExerciseCreateScreen
 import com.mrxx0.weightlifting.presentation.exercise.details.ExerciseDetailsScreen
+import com.mrxx0.weightlifting.presentation.navigation.graph.RootNavigationGraph
 import com.mrxx0.weightlifting.presentation.session.create.SessionCreateScreen
 import com.mrxx0.weightlifting.presentation.session.detailsscreen.SessionDetailsScreen
 import com.mrxx0.weightlifting.presentation.session.mainscreen.SessionMainScreen
@@ -34,65 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    val context = LocalContext.current
-
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = stringResource(id = R.string.route_main_screen)
-                    ) {
-                        composable(context.resources.getString(R.string.route_main_screen)) {
-                            SessionMainScreen(navController = navController)
-                        }
-                        composable(context.resources.getString(R.string.route_session_creator_screen)) {
-                            SessionCreateScreen(navController = navController)
-                        }
-                        composable(
-                            "SessionDetailsScreen/{sessionId}",
-                            arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
-                        ) {
-                            it.arguments?.getInt("sessionId")?.let { it1 ->
-                                SessionDetailsScreen(
-                                    navController = navController,
-                                    it1
-                                )
-                            }
-                        }
-                        composable(
-                            "ExerciseDetailsScreen/{exerciseId}",
-                            arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
-                        ) {
-                            it.arguments?.getInt("exerciseId")?.let { it1 ->
-                                ExerciseDetailsScreen(
-                                    navController = navController,
-                                    it1
-                                )
-                            }
-                        }
-                        composable(
-                            "ExerciseCreateScreen/{sessionId}",
-                            arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
-                        ) {
-                            it.arguments?.getInt("sessionId")?.let { it1 ->
-                                ExerciseCreateScreen(
-                                    navController = navController,
-                                    it1
-                                )
-                            }
-                        }
-                        composable(
-                            "SetCreateScreen/{exerciseId}",
-                            arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
-                        ) {
-                            it.arguments?.getInt("exerciseId")?.let { it1 ->
-                                SetCreateScreen(
-                                    navController = navController,
-                                    it1
-                                )
-                            }
-                        }
-                    }
+                    RootNavigationGraph(navController = rememberNavController())
                 }
             }
         }

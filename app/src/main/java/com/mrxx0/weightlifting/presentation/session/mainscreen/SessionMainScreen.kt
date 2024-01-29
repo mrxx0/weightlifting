@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.presentation.components.TopBar
+import com.mrxx0.weightlifting.presentation.navigation.graph.Graph
 import com.mrxx0.weightlifting.presentation.session.card.SessionCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +55,8 @@ fun SessionMainScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    navController.navigate(context.resources.getString(R.string.route_session_creator_screen))
+//                    navController.navigate(Graph.HISTORY)
+//                    navController.navigate(context.resources.getString(R.string.route_session_creator_screen))
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
