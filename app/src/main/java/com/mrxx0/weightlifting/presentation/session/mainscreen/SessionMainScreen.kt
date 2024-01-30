@@ -7,16 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,25 +24,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.presentation.components.TopBar
-import com.mrxx0.weightlifting.presentation.navigation.graph.Graph
+import com.mrxx0.weightlifting.presentation.navigation.BottomNavigationBar
+import com.mrxx0.weightlifting.presentation.navigation.graph.SessionScreen
 import com.mrxx0.weightlifting.presentation.session.card.SessionCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionMainScreen(
-    navController: NavController
+    navController: NavHostController
 ) {
 
     val viewModel = hiltViewModel<SessionsViewModel>()
     val listSession by viewModel.allSessions.observeAsState()
-    val context = LocalContext.current
 
     LaunchedEffect(true) {
         viewModel.loadSession()
@@ -53,10 +50,12 @@ fun SessionMainScreen(
 
     Scaffold(
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            FloatingActionButton(
                 onClick = {
-//                    navController.navigate(Graph.HISTORY)
-//                    navController.navigate(context.resources.getString(R.string.route_session_creator_screen))
+                    navController.navigate(SessionScreen.Create.route) {
+                        restoreState = false
+                        launchSingleTop = true
+                    }
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -65,19 +64,21 @@ fun SessionMainScreen(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(id = R.string.add_session)
                 )
-                Spacer(modifier = Modifier.width(width = 8.dp))
-                Text(text = stringResource(id = R.string.add_session))
             }
+
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,
                 modifier = Modifier.background(Color.Blue),
-                title = stringResource(id = R.string.your_program),
+                title = "Your Session",
                 onActionClick = null,
                 onNavigationIconClick = null
             )
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navController)
         }
 
     ) { contentPadding ->
@@ -91,9 +92,9 @@ fun SessionMainScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (listSession != null) {
+                listSession?.let {
                     LazyColumn {
-                        items(count = listSession!!.size) { index ->
+                        items(count = it.size) { index ->
                             val session = listSession!![index]
                             SessionCard(
                                 session = session,

@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.exercise.details
+package com.mrxx0.weightlifting.presentation.exercisemodel.details
 
 import androidx.lifecycle.ViewModel
 import com.mrxx0.weightlifting.domain.model.Set

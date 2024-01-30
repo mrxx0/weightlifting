@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mrxx0.weightlifting.domain.model.Exercise
+import com.mrxx0.weightlifting.domain.model.ExerciseModel
 import com.mrxx0.weightlifting.domain.model.Session
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -17,15 +17,15 @@ sealed class NavigationBarScreen(
         icon = Icons.Default.History
     )
 
-    data object Training : NavigationBarScreen(
-        route = "Training",
-        title = "Training",
+    data object Session : NavigationBarScreen(
+        route = "Session",
+        title = "Session",
         icon = Icons.Default.DirectionsRun
     )
 
-    data object Exercises : NavigationBarScreen(
-        route = "Exercises",
-        title = "Exercises",
+    data object ExercisesModel : NavigationBarScreen(
+        route = "ExercisesModel",
+        title = "Exercises Model",
         icon = Icons.Default.FitnessCenter
     )
 }

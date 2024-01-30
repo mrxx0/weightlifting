@@ -35,4 +35,11 @@ class ExerciseRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             exerciseDao.getExerciseById(exerciseId).toExercise()
         }
+
+    override suspend fun getAllExercises(): List<Exercise> =
+        withContext(Dispatchers.IO) {
+            exerciseDao.getAllExercises().map {
+                it.toExercise()
+            }
+        }
 }

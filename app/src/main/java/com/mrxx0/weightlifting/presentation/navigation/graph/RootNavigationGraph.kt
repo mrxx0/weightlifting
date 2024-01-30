@@ -22,6 +22,6 @@ fun RootNavigationGraph(navController: NavHostController) {
 object Graph {
     const val ROOT = "root_graph"
     const val HISTORY = "history_graph"
-    const val TRAINING = "training_graph"
+    const val SESSION = "session_graph"
     const val EXERCISES = "exercises_graph"
 }

@@ -1,4 +1,4 @@
-package com.mrxx0.weightlifting.presentation.exercise.create
+package com.mrxx0.weightlifting.presentation.exercisemodel.create
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -36,22 +36,21 @@ import com.mrxx0.weightlifting.presentation.components.TopBar
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseCreateScreen(
+fun ExerciseModelCreateScreen(
     navController: NavController,
-    sessionId: Int
 ) {
     val scroll = rememberScrollState()
-    val viewModel = hiltViewModel<ExerciseCreateViewModel>()
+    val viewModel = hiltViewModel<ExerciseModelCreateViewModel>()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val nameError = viewModel.exerciseCreateUiState.value.nameError
+    val nameError = viewModel.exerciseModelCreateUiState.value.nameError
 
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
                     if (!nameError) {
-                        viewModel.onEvent(ExerciseCreateUiEvent.ExerciseCreateClicked)
-                        if (viewModel.exerciseCreateUiState.value.exerciseSaved) {
+                        viewModel.onEvent(ExerciseModelCreateUiEvent.ExerciseCreateClicked)
+                        if (viewModel.exerciseModelCreateUiState.value.exerciseSaved) {
                             navController.popBackStack()
                         }
                     }
@@ -105,9 +104,9 @@ fun ExerciseCreateScreen(
                         TextFieldComponent(
                             labelValue = stringResource(id = R.string.name),
                             onTextChanged = {
-                                viewModel.onEvent(ExerciseCreateUiEvent.NameChanged(it, sessionId))
+                                viewModel.onEvent(ExerciseModelCreateUiEvent.NameChanged(it))
                             },
-                            errorStatus = viewModel.exerciseCreateUiState.value.nameError,
+                            errorStatus = viewModel.exerciseModelCreateUiState.value.nameError,
                             errorMessage = stringResource(id = R.string.create_exercise_error_message)
                         )
                     }

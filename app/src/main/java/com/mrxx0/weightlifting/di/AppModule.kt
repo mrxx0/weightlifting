@@ -3,9 +3,11 @@ package com.mrxx0.weightlifting.di
 import android.content.Context
 import androidx.room.Room
 import com.mrxx0.weightlifting.data.local.WeightliftingDatabase
+import com.mrxx0.weightlifting.data.repository.ExerciseModelRepositoryImpl
 import com.mrxx0.weightlifting.data.repository.ExerciseRepositoryImpl
 import com.mrxx0.weightlifting.data.repository.SessionRepositoryImpl
 import com.mrxx0.weightlifting.data.repository.SetRepositoryImpl
+import com.mrxx0.weightlifting.domain.repository.ExerciseModelRepository
 import com.mrxx0.weightlifting.domain.repository.ExerciseRepository
 import com.mrxx0.weightlifting.domain.repository.SessionRepository
 import com.mrxx0.weightlifting.domain.repository.SetRepository
@@ -45,5 +47,11 @@ object AppModule {
     @Singleton
     fun provideSetRepository(weightliftingDatabase: WeightliftingDatabase): SetRepository {
         return SetRepositoryImpl(weightliftingDatabase.setsDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideExerciseModelRepository(weightliftingDatabase: WeightliftingDatabase): ExerciseModelRepository {
+        return ExerciseModelRepositoryImpl(weightliftingDatabase.exerciseModelDao())
     }
 }

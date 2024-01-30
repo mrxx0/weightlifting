@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -27,34 +28,35 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.mrxx0.weightlifting.R
 import com.mrxx0.weightlifting.presentation.components.TopBar
-import com.mrxx0.weightlifting.presentation.exercise.card.ExerciseCard
+import com.mrxx0.weightlifting.presentation.navigation.BottomNavigationBar
+import com.mrxx0.weightlifting.presentation.navigation.graph.SessionScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionDetailsScreen(
-    navController: NavController,
+    navController: NavHostController,
     sessionId: Int
 ) {
     val viewModel = hiltViewModel<SessionDetailsViewModel>()
 
     val session by viewModel.sharedSession.observeAsState()
-    val exerciseList by viewModel.exerciseList.observeAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val exerciseList by viewModel.exerciseList.observeAsState()
 
-    LaunchedEffect(key1 = session, key2 = session?.exercise) {
+
+    LaunchedEffect(true) {
         viewModel.getSessionById(sessionId = sessionId)
-        viewModel.loadExerciseList(sessionId)
+//        viewModel.loadExerciseList(sessionId)
     }
-
-    if (session != null) {
+    session?.let {
         Scaffold(
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        navController.navigate("ExerciseCreateScreen/${sessionId}")
+                        navController.navigate(SessionScreen.AddExercise.route)
                     },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -68,7 +70,8 @@ fun SessionDetailsScreen(
                 }
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = { TopBar(title = session?.name!!, scrollBehavior = scrollBehavior) }
+            topBar = { TopBar(title = session?.name!!, scrollBehavior = scrollBehavior) },
+            bottomBar = { BottomNavigationBar(navController = navController) }
 
         ) { contentPadding ->
             Box(
@@ -81,21 +84,35 @@ fun SessionDetailsScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    LazyColumn {
-                        exerciseList?.let {
-                            items(count = it.size) { index ->
-                                val exercise = it[index]
-                                ExerciseCard(
-                                    exercise = exercise,
-                                    navController = navController
-                                )
+                    exerciseList?.let {
+                        if (it.isNotEmpty()) {
+                            LazyColumn {
+                                items(count = it.size) { index ->
+                                    val exercise = it[index]
+                                    Text("${exercise.name}")
+//                                    ExerciseCard(
+//                                        exercise = exercise,
+//                                        navController = navController
+//                                    )
+                                }
+                                item { Spacer(modifier = Modifier.padding(50.dp)) }
                             }
+                        } else {
+                            Text(
+                                text = "No exercise",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
                         }
-                        item { Spacer(modifier = Modifier.padding(50.dp)) }
+                    } ?: run {
+                        Text(
+                            text = "No exercise",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     }
-
                 }
             }
         }
+    } ?: run {
+        CircularProgressIndicator()
     }
 }

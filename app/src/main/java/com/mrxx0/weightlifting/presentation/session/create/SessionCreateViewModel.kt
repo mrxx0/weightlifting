@@ -7,6 +7,7 @@ import com.mrxx0.weightlifting.data.rules.Validator
 import com.mrxx0.weightlifting.domain.model.Session
 import com.mrxx0.weightlifting.domain.usecase.CreateSessionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -50,7 +51,7 @@ class SessionCreateViewModel @Inject constructor(
         val newSession = Session(
             name = sessionCreateUIState.value.name
         )
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             createSessionUseCase(newSession)
         }
         sessionCreateUIState.value = sessionCreateUIState.value.copy(

@@ -8,4 +8,5 @@ interface ExerciseRepository {
     suspend fun deleteExercise(exercise: Exercise)
     suspend fun getExercisesForSession(sessionId: Int): List<Exercise>
     suspend fun getExerciseById(exerciseId: Int): Exercise
+    suspend fun getAllExercises(): List<Exercise>
 }

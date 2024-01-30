@@ -3,7 +3,6 @@ package com.mrxx0.weightlifting.presentation.session.detailsscreen
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mrxx0.weightlifting.domain.model.Exercise
 import com.mrxx0.weightlifting.domain.repository.ExerciseRepository
 import com.mrxx0.weightlifting.domain.repository.SessionRepository
@@ -21,8 +20,8 @@ class SessionDetailsViewModel @Inject constructor(
     private val sharedData: SharedDataViewModel
 ) : ViewModel() {
 
-    private val _exerciseList = MutableLiveData<List<Exercise>>()
-    val exerciseList: LiveData<List<Exercise>> get() = _exerciseList
+    private val _exerciseList = MutableLiveData<List<Exercise>?>(emptyList())
+    val exerciseList: LiveData<List<Exercise>?> get() = _exerciseList
     val sharedSession = sharedData.session
 
     fun getSessionById(sessionId: Int) {
@@ -40,10 +39,11 @@ class SessionDetailsViewModel @Inject constructor(
         }
     }
 
-    fun loadExerciseList(sessionId: Int) {
-        viewModelScope.launch {
-            _exerciseList.postValue(exerciseRepository.getExercisesForSession(sessionId))
-        }
-    }
+
+//    fun loadExerciseList(sessionId: Int) {
+//        viewModelScope.launch {
+//            _exerciseList.postValue(exerciseRepository.getExercisesForSession(sessionId))
+//        }
+//    }
 
 }

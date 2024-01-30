@@ -16,11 +16,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 
 @Composable
-fun NavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(navController: NavHostController) {
     val screens = listOf(
         NavigationBarScreen.History,
-        NavigationBarScreen.Training,
-        NavigationBarScreen.Exercises,
+        NavigationBarScreen.Session,
+        NavigationBarScreen.ExercisesModel,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

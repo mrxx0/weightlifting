@@ -1,8 +1,6 @@
 package com.mrxx0.weightlifting.domain.model
 
-data class Exercise(
+data class ExerciseModel(
     val id: Int = 0,
     val name: String? = null,
-    val sessionId: Int,
-    val set: List<Set>? = null,
 )
